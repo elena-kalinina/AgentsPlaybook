@@ -10,4 +10,6 @@ venv/
 dist/
 build/
 logs/*.jsonl
+logs/*.json
 !logs/.gitkeep
+data/predictions.json
