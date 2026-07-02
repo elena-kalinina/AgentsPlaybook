@@ -1,35 +1,33 @@
-# Agent — Playbook v2 (Knockout phase)
+# Agent — Playbook v3 (Knockout phase)
 
-> Strategy playbook for **World Cup 2026 knockout matches** (Round of 16 onward).
+> Strategy playbook for World Cup knockout matches.
 
 ## Principles
-- Predict honestly first, then apply knockout strategy to the pick.
-- Market odds are a strong prior; deviate only with a stated reason.
-- Recent form and availability beat reputation — but knockout pressure tightens games.
-- **Every bet must pick a winner** (`home` or `away`). Draw is never valid in knockouts.
+- Predict honestly first, then apply knockout strategy.
+- Market odds are a strong prior; deviate only with clear tactical reasons.
+- In 90-minute draws, break ties by favoring squad depth and tournament pedigree to advance.
 
 ## Knockout rules
-- Scores are **90-minute regulation only**. Extra time and penalties are not scored.
-- If you expect ET/pens: predict the 90-min score (0-0, 1-1, 2-2) **and** pick the tie winner.
-- Do not pick open, high-scoring games by default — knockouts often compress after 60'.
-- A correct winner with wrong score or cards is a **partial miss**; aim for every field.
+- Every prediction must select a winner (`home` or `away`). `draw` is never allowed.
+- Scores are 90-minute regulation only. Extra time and penalties do not count toward the scoreline.
+- If expecting ET/penalties, predict a level 90-minute score (0-0, 1-1, 2-2) and select the advancing team as the winner.
 
 ## Heuristics
-- Start from de-vigged market odds; adjust for absences and knockout caution.
-- **Cards:** use recent tournament booking rates — do **not** default to 4 yellows. Round-of-32 data suggests ~2–3 yellows is more typical; watch for late desperation fouls (red card risk in tight games).
-- **Exact score:** worth pursuing when intel is strong (+5 bonus). Avoid assuming a consolation goal for the loser (e.g. 3-1 when a clean sheet is likely).
-- **Favourite player:** verify likely starters and recent scorers — not just big names (e.g. Jiménez vs in-form Quiñones).
+- **Cards:** Aggressively lower yellow card baseline to 1–2 per match. Do not default to 3-4 yellows; modern knockout discipline often leads to clean games (0-1 bookings).
+- **Red Cards:** Anticipate late, high-stakes defensive desperation. Straight reds can occur without prior yellow card accumulation.
+- **Exact Scores:** Avoid predicting consolation goals for weaker sides against elite defensive teams (e.g., prefer 3-0 over 3-1). Conversely, expect late offensive desperation from underdogs against favorites who sit back (e.g., 2-1 over 2-0).
+- **Standout Players:** Prioritize in-form transitional strikers and verified starters over reputation alone.
 
 ## Watch-outs
-- **Never pick `draw` as winner** — invalid in knockouts (predict 2-2 + pick a side instead).
-- We over-count yellows: stop anchoring on 4Y without match-specific evidence.
-- We under-count reds: tight knockout games can produce late straight reds.
-- Don't assume losers score in comfortable favourite wins (3-0 > 3-1 when defence is solid).
+- **Never pick `draw` as winner** — invalid in knockouts.
+- **Yellow Card Over-prediction:** Stop anchoring on high booking counts.
+- **Consolation Goal Bias:** Do not award "courtesy" goals to losers when a clean sheet is tactically likely.
 
 ## Open questions
-- How to predict late red cards from match state (level score, last 15')?
-- When to predict level 90-min scores vs. regulation winner?
+- How to systematically predict isolated straight red cards in tight matches?
+- What is the optimal threshold for predicting a 90-minute draw versus a narrow regulation win?
 
 ## Changelog
-- v1: seeded from human workbook, scoped to knockout phase.
-- v2: after Round-of-32 review — tighten card estimates (2–3Y baseline), add red-card watch, enforce no-draw rule, chase exact scores not just winners.
+- v1: Seeded from human workbook.
+- v2: Tightened card estimates (2-3Y), added red-card watch, enforced no-draw rule.
+- v3: Aggressively lowered yellow baseline to 1-2Y, added draw-breaker pedigree heuristic, and removed consolation goal bias for elite defenses.
