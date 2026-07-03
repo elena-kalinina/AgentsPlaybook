@@ -54,6 +54,35 @@ cup-clash-agents/
 
 Follow `docs/10-build-plan.md`. In short: data model → MCP tools (with a fake data stub first) → single-agent loop end-to-end on one finished match → reflection + playbook evolution → multi-agent league → replay harness → computer-use showpiece → demo runbook rehearsal.
 
+## Running the built system
+
+Setup: `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`, then copy `.env.example` to `.env` and fill in keys.
+
+CLI commands (all output also streams to `logs/current_run.txt`):
+
+```bash
+.venv/bin/python -m src.cli run-daily-loop   # settle → reflect → evolve playbook → bet next 3
+.venv/bin/python -m src.cli prebet           # fresh intel + re-place ALL upcoming bets (near kickoff)
+.venv/bin/python -m src.cli reflect-only     # settle + reflect + evolve, no new bets
+.venv/bin/python -m src.cli check-models     # probe each configured Gemini model (quota check)
+```
+
+Scheduler daemon (daily loop at 10:00 Europe/Brussels + one automatic `prebet` refresh 50 min before the earliest upcoming kickoff):
+
+```bash
+.venv/bin/python -m src.scheduler
+```
+
+Keep the laptop awake around job times (`caffeinate -i .venv/bin/python -m src.scheduler` prevents sleep while it runs). A missed job fires up to 30 min late; beyond that the morning's provisional bets stand.
+
+Dashboard (playbook history + diffs, points and Brier charts, manual run buttons with live log):
+
+```bash
+.venv/bin/streamlit run app/dashboard.py
+```
+
+Gemini model routing is configured in `.env` (`GEMINI_MODEL_SUMMARIZE/ANALYZE/ACT` + fallbacks). The roles map to separate free-tier quota buckets so a single exhausted model can't sink a run.
+
 ## Non-negotiables
 
 This is a **for-fun, points-only** game. The agents place play-money predictions inside Cup Clash and nothing else. Do not connect any agent, tool, or browser flow to a real sportsbook, real wagering, or real money. See `AGENTS.md`.

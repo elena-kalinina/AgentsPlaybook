@@ -9,8 +9,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-import google.api_core.exceptions
-import google.generativeai as genai
+from google import genai
+from google.genai import errors as genai_errors
 
 from src.config import ModelRoutes, Settings
 
@@ -37,10 +37,9 @@ class ModelRouter:
         *,
         min_interval_sec: float = 30.0,
     ) -> None:
-        genai.configure(api_key=api_key)
+        self._client = genai.Client(api_key=api_key)
         self.min_interval_sec = min_interval_sec
         self._last_call_at: dict[str, float] = {}
-        self._models: dict[str, genai.GenerativeModel] = {}
         self._slots = {
             ModelRole.SUMMARIZE: _ModelSlot(routes.summarize, routes.summarize_fallback),
             ModelRole.ANALYZE: _ModelSlot(routes.analyze, routes.analyze_fallback),
@@ -74,10 +73,35 @@ class ModelRouter:
     def usage_summary(self) -> dict[str, int]:
         return dict(self._usage)
 
-    def _model(self, name: str) -> genai.GenerativeModel:
-        if name not in self._models:
-            self._models[name] = genai.GenerativeModel(name)
-        return self._models[name]
+    def check_models(self) -> list[dict[str, str]]:
+        """Probe each distinct configured model once and report ok / quota / error.
+
+        Costs one request per distinct model — used before relying on a new split.
+        """
+        names: list[str] = []
+        for slot in self._slots.values():
+            for name in (slot.primary, slot.fallback):
+                if name not in names:
+                    names.append(name)
+
+        results: list[dict[str, str]] = []
+        for name in names:
+            self._wait_for_rate_limit(name, "check")
+            try:
+                response = self._client.models.generate_content(
+                    model=name,
+                    contents="Reply with exactly: OK",
+                    config={"temperature": 0.0},
+                )
+                self._last_call_at[name] = time.time()
+                text = (response.text or "").strip()
+                results.append({"model": name, "status": "ok", "detail": text[:40]})
+            except genai_errors.APIError as exc:
+                status = "quota" if exc.code == 429 else "error"
+                results.append({"model": name, "status": status, "detail": str(exc)[:200]})
+            except Exception as exc:
+                results.append({"model": name, "status": "error", "detail": str(exc)[:200]})
+        return results
 
     def _generate_json(
         self,
@@ -109,18 +133,28 @@ class ModelRouter:
             for attempt in range(max_retries):
                 self._wait_for_rate_limit(model_name, phase)
                 try:
-                    response = self._model(model_name).generate_content(
-                        full_prompt,
-                        generation_config={"temperature": 0.4},
+                    response = self._client.models.generate_content(
+                        model=model_name,
+                        contents=full_prompt,
+                        config={"temperature": 0.4},
                     )
                     self._last_call_at[model_name] = time.time()
                     self._usage[model_name] = self._usage.get(model_name, 0) + 1
                     return (response.text or "").strip()
-                except google.api_core.exceptions.ResourceExhausted as exc:
+                except genai_errors.APIError as exc:
                     last_exc = exc
-                    wait = _retry_delay_sec(exc, fallback=60 * (attempt + 1))
+                    # 429 = quota, 503 = transient overload; both worth retrying
+                    if exc.code not in (429, 503):
+                        print(f"[gemini:{phase}@{model_name}] error: {exc}")
+                        break
+                    if exc.code == 503:
+                        wait = 15.0 * (attempt + 1)
+                        reason = "overloaded"
+                    else:
+                        wait = _retry_delay_sec(exc, fallback=60 * (attempt + 1))
+                        reason = "quota"
                     print(
-                        f"[gemini:{phase}@{model_name}] quota — retry in {wait:.0f}s "
+                        f"[gemini:{phase}@{model_name}] {reason} — retry in {wait:.0f}s "
                         f"({attempt + 1}/{max_retries})"
                     )
                     time.sleep(wait)
@@ -157,8 +191,12 @@ def parse_json_response(text: str) -> dict[str, Any]:
     return json.loads(cleaned)
 
 
-def _retry_delay_sec(exc: google.api_core.exceptions.ResourceExhausted, *, fallback: float) -> float:
-    match = re.search(r"retry in (\d+(?:\.\d+)?)s", str(exc), re.IGNORECASE)
+def _retry_delay_sec(exc: Exception, *, fallback: float) -> float:
+    text = str(exc)
+    match = re.search(r"retry in (\d+(?:\.\d+)?)s", text, re.IGNORECASE)
+    if match:
+        return float(match.group(1)) + 2.0
+    match = re.search(r"retryDelay['\"]?\s*:\s*['\"]?(\d+(?:\.\d+)?)s", text)
     if match:
         return float(match.group(1)) + 2.0
     return fallback

@@ -6,7 +6,8 @@ import argparse
 import sys
 
 from src.config import load_settings
-from src.loop.daily import run_daily_loop, run_reflect_only
+from src.loop.daily import run_daily_loop, run_prebet_refresh, run_reflect_only
+from src.loop.livelog import live_log
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -14,6 +15,11 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("run-daily-loop", help="Settle → reflect → evolve → place next 3 bets")
+
+    sub.add_parser(
+        "prebet",
+        help="Refresh intel and re-place bets for ALL upcoming matches (run near kickoff)",
+    )
 
     reflect = sub.add_parser(
         "reflect-only",
@@ -30,16 +36,47 @@ def main(argv: list[str] | None = None) -> int:
         help="Fix scheduled knockout bets that incorrectly picked draw",
     )
 
+    sub.add_parser(
+        "check-models",
+        help="Probe each configured Gemini model once and report ok/quota/error",
+    )
+
     args = parser.parse_args(argv)
     settings = load_settings()
 
     if args.command == "run-daily-loop":
-        run_daily_loop(settings)
+        with live_log(settings.live_log_path):
+            run_daily_loop(settings)
+        return 0
+
+    if args.command == "prebet":
+        with live_log(settings.live_log_path):
+            run_prebet_refresh(settings)
         return 0
 
     if args.command == "reflect-only":
-        run_reflect_only(settings, force_evolve=args.force_evolve)
+        with live_log(settings.live_log_path):
+            run_reflect_only(settings, force_evolve=args.force_evolve)
         return 0
+
+    if args.command == "check-models":
+        from src.agents.gemini import ModelRouter
+
+        router = ModelRouter.from_settings(settings)
+        routes = settings.model_routes
+        print(
+            f"Routes: summarize={routes.summarize} (fb {routes.summarize_fallback}), "
+            f"analyze={routes.analyze} (fb {routes.analyze_fallback}), "
+            f"act={routes.act} (fb {routes.act_fallback})"
+        )
+        results = router.check_models()
+        failed = False
+        for row in results:
+            marker = "OK  " if row["status"] == "ok" else "FAIL"
+            print(f"  [{marker}] {row['model']}: {row['status']} — {row['detail']}")
+            if row["status"] != "ok":
+                failed = True
+        return 1 if failed else 0
 
     if args.command == "fix-knockout-bets":
         from src.agents.gemini import ModelRouter

@@ -35,14 +35,20 @@ class Settings:
     data_dir: Path
     predictions_path: Path
     metrics_path: Path
+    intel_cache_path: Path
+    schedule_path: Path
+    live_log_path: Path
+    settled_path: Path
 
 
 def load_settings() -> Settings:
-    load_dotenv(ROOT / ".env")
+    # override=True: the .env file is the single source of truth; stale exports
+    # in the parent shell must not silently win (bit us with old model names).
+    load_dotenv(ROOT / ".env", override=True)
 
-    default = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
-    summarize = os.environ.get("GEMINI_MODEL_SUMMARIZE", default)
-    analyze = os.environ.get("GEMINI_MODEL_ANALYZE", "gemini-3-flash-preview")
+    default = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    summarize = os.environ.get("GEMINI_MODEL_SUMMARIZE", "gemini-2.5-flash-lite")
+    analyze = os.environ.get("GEMINI_MODEL_ANALYZE", "gemini-3.5-flash")
     act = os.environ.get("GEMINI_MODEL_ACT", default)
 
     return Settings(
@@ -65,4 +71,8 @@ def load_settings() -> Settings:
         data_dir=ROOT / "data",
         predictions_path=ROOT / "data" / "predictions.json",
         metrics_path=ROOT / "data" / "metrics.json",
+        intel_cache_path=ROOT / "data" / "intel_cache.json",
+        schedule_path=ROOT / "data" / "schedule.json",
+        live_log_path=ROOT / "logs" / "current_run.txt",
+        settled_path=ROOT / "data" / "settled.json",
     )

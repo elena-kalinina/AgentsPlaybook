@@ -16,6 +16,7 @@ from src.loop.knockout import (
     REFLECT_CRITICAL_INSTRUCTIONS,
 )
 from src.mcp.client import McpClient
+from src.loop import settled
 from src.metrics.brier import append_metrics, compute_brier, rolling_brier
 from src.playbook import predictions_store
 from src.playbook import store as playbook_store
@@ -53,6 +54,7 @@ def run_reflect_only(settings: Settings, *, force_evolve: bool = False) -> dict[
         router, playbook, settings, finished, intel, scheduled, run_log
     )
     _evolve_phase(router, playbook, settings, reflection, intel, run_log, force=force_evolve)
+    settled.mark(settings.settled_path, finished)
     run_log["model_usage"] = router.usage_summary()
     _finish_run(settings, run_log)
     print("\n==> Reflect-only complete.")
@@ -81,6 +83,7 @@ def run_daily_loop(settings: Settings) -> dict[str, Any]:
             router, playbook, settings, finished, intel, scheduled, run_log
         )
         playbook = _evolve_phase(router, playbook, settings, reflection, intel, run_log)
+        settled.mark(settings.settled_path, finished)
 
     _scan_and_bet_phase(mcp, router, tavily, settings, playbook, run_log)
     run_log["model_usage"] = router.usage_summary()
@@ -169,30 +172,76 @@ as the tie winner. Return JSON:
     return fixes
 
 
+def run_prebet_refresh(settings: Settings) -> dict[str, Any]:
+    """Refresh intel and re-place bets for ALL upcoming matches we already bet on.
+
+    Runs ~50 min before the earliest kickoff (scheduler) or on demand (CLI/dashboard).
+    The morning's provisional bets stay in place if anything here fails.
+    """
+    mcp, router, tavily = _clients(settings)
+    playbook = playbook_store.read_playbook(settings.playbook_path)
+    run_log: dict[str, Any] = {
+        "mode": "prebet-refresh",
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "phases": [],
+    }
+
+    print("\n==> PREBET: refreshing all upcoming bets with latest intel")
+    upcoming = mcp.list_upcoming_matches(settings.group_id, limit=10)
+    _write_schedule(settings, upcoming)
+    targets = [m for m in upcoming if m.get("my_bet")]
+    if not targets:
+        # Fallback: morning run didn't happen — bet on the next 3 fresh.
+        targets = [m for m in upcoming if not m.get("my_bet")][:3]
+    run_log["phases"].append({"phase": "scan", "targets": targets})
+
+    if not targets:
+        print("    No upcoming matches to refresh.")
+    else:
+        for match in targets:
+            print(f"    • {match['home_team']} vs {match['away_team']} @ {match['kickoff_at']}")
+        _research_predict_place(
+            mcp, router, tavily, settings, playbook, targets, run_log, fresh_intel=True
+        )
+
+    run_log["model_usage"] = router.usage_summary()
+    _finish_run(settings, run_log)
+    print("\n==> Prebet refresh complete.")
+    return run_log
+
+
 def _clients(settings: Settings) -> tuple[McpClient, ModelRouter, TavilySearch]:
     return (
         McpClient(settings.mcp_url, settings.mcp_token),
         ModelRouter.from_settings(settings),
-        TavilySearch(settings.tavily_api_key),
+        TavilySearch(settings.tavily_api_key, cache_path=settings.intel_cache_path),
     )
 
 
 def _settle_phase(
     mcp: McpClient, settings: Settings, run_log: dict[str, Any]
 ) -> list[dict[str, Any]]:
+    """Return only finished bets that haven't been reflected on in a previous run."""
     print("\n==> Phase 1: SETTLE — checking bet results")
     all_bets = mcp.get_my_bets(settings.group_id, include_finished=True)
-    finished = [b for b in all_bets if b.get("status") == "finished"]
+    already_processed = settled.load(settings.settled_path)
+    all_finished = [b for b in all_bets if b.get("status") == "finished"]
+    finished = [b for b in all_finished if b["match_id"] not in already_processed]
     pending = [b for b in all_bets if b.get("status") != "finished"]
     run_log["phases"].append(
         {
             "phase": "settle",
-            "finished_count": len(finished),
+            "finished_total": len(all_finished),
+            "finished_new": len(finished),
             "pending_count": len(pending),
             "finished": finished,
         }
     )
-    print(f"    {len(finished)} finished, {len(pending)} still pending")
+    print(
+        f"    {len(all_finished)} finished total, {len(finished)} new to process "
+        f"({len(all_finished) - len(finished)} already reflected on), "
+        f"{len(pending)} still pending"
+    )
     for bet in finished:
         print(
             f"    • {bet['home_team']} vs {bet['away_team']}: "
@@ -233,7 +282,7 @@ def _research_phase(
     raw_intel: dict[str, dict[str, str]] = {}
     for bet in finished:
         raw_intel[bet["match_id"]] = tavily.gather_post_match_intel(
-            bet["home_team"], bet["away_team"]
+            bet["home_team"], bet["away_team"], match_id=bet["match_id"]
         )
         print(
             f"    searched: {bet['home_team']} vs {bet['away_team']} "
@@ -492,6 +541,7 @@ def _scan_and_bet_phase(
 ) -> None:
     print("\n==> Phase 5: SCAN — fetch next 3 upcoming matches")
     upcoming = mcp.list_upcoming_matches(settings.group_id, limit=10)
+    _write_schedule(settings, upcoming)
     targets = [m for m in upcoming if not m.get("my_bet")][:3]
     run_log["phases"].append({"phase": "scan", "targets": targets})
     for match in targets:
@@ -501,14 +551,56 @@ def _scan_and_bet_phase(
         print("    No open matches to bet on.")
         return
 
+    _research_predict_place(mcp, router, tavily, settings, playbook, targets, run_log)
+
+
+def _write_schedule(settings: Settings, upcoming: list[dict[str, Any]]) -> None:
+    """Persist upcoming kickoffs (+ my_bet status) so the scheduler and dashboard
+    can compute the single refresh time (earliest kickoff − 50 min) without MCP."""
+    entries = [
+        {
+            "match_id": m["match_id"],
+            "match": f"{m['home_team']} vs {m['away_team']}",
+            "kickoff_at": m.get("kickoff_at"),
+            "stage": m.get("stage"),
+            "has_bet": bool(m.get("my_bet")),
+        }
+        for m in upcoming
+    ]
+    settings.schedule_path.parent.mkdir(parents=True, exist_ok=True)
+    settings.schedule_path.write_text(
+        json.dumps(
+            {"updated_at": datetime.now(timezone.utc).isoformat(), "matches": entries},
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+
+def _research_predict_place(
+    mcp: McpClient,
+    router: ModelRouter,
+    tavily: TavilySearch,
+    settings: Settings,
+    playbook: str,
+    targets: list[dict[str, Any]],
+    run_log: dict[str, Any],
+    *,
+    fresh_intel: bool = False,
+) -> None:
     print("\n==> Phase 6: RESEARCH — Tavily preview + lineups + odds (raw, no LLM)")
     raw_intel: dict[str, dict[str, str]] = {}
     for match in targets:
-        bundle = tavily.gather_pre_match_intel(match["home_team"], match["away_team"])
+        bundle = tavily.gather_pre_match_intel(
+            match["home_team"],
+            match["away_team"],
+            match_id=match["match_id"],
+            force_refresh=fresh_intel,
+        )
         raw_intel[match["match_id"]] = bundle
         print(f"    gathered: {match['home_team']} vs {match['away_team']} (preview+lineups+odds)")
 
-    print("\n==> Phase 6b: SUMMARIZE upcoming intel (summarize model = gemini-3.5-flash)")
+    print("\n==> Phase 6b: SUMMARIZE upcoming intel (summarize model)")
     intel = summarize_upcoming_matches(router, targets, raw_intel)
     run_log["phases"].append({"phase": "summarize_upcoming", "intel": intel})
     for row in intel.get("matches") or []:
