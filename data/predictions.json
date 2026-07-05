@@ -128,15 +128,43 @@
   "c3f3e237-7a2a-4f6a-b31c-ca6a1d8ad902": {
     "match": "Mexico vs England",
     "probs": {
-      "home": 0.32,
-      "draw": 0.38,
-      "away": 0.3
+      "home": 0.33,
+      "draw": 0.34,
+      "away": 0.33
     },
     "pick": "away",
     "predicted_home_score": 1,
     "predicted_away_score": 1,
-    "reasoning": "This match is finely balanced. While England is slightly favored and boasts Harry Kane's excellent form, Mexico holds significant advantages: an unbeaten run with clean sheets throughout the tournament, and the crucial high-altitude home advantage at Estadio Azteca. These factors strongly boost Mexico's chances of holding England to a draw in regulation time. I predict a 1-1 draw in 90 minutes, reflecting Mexico's defensive solidity against England's attacking threat. England is chosen to win the tie in extra time or penalties, banking on their deeper squad and big-game experience to overcome the altitude challenge in the extended period. The high stakes and physical nature of the game, exacerbated by altitude, are expected to result in a higher card count, including a potential red card.",
+    "reasoning": "This is a very tight match where Mexico's strong home record at Estadio Azteca, coupled with the altitude, balances England's slight quality advantage and market favoritism. England had a 'bumpy ride' in the group stage, suggesting potential vulnerabilities. I predict a 90-minute draw as the most probable outcome, with England ultimately advancing after extra time or penalties due to their deeper squad and experience in high-stakes situations. The 'Over 2.5 goals' suggestion supports a 1-1 scoreline over 0-0. High card count is expected given the knockout intensity.",
     "playbook_version": 6,
-    "saved_at": "2026-07-05T13:21:36.596192+00:00"
+    "saved_at": "2026-07-05T23:37:48.057158+00:00"
+  },
+  "1b723170-8b92-4722-bb24-219dfebbe795": {
+    "match": "Portugal vs Spain",
+    "probs": {
+      "home": 0.2,
+      "draw": 0.25,
+      "away": 0.55
+    },
+    "pick": "away",
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "reasoning": "Spain is a clear favorite in this heavyweight clash, primarily due to their exceptional defensive solidity, having not conceded a goal in the tournament. Portugal's progression was by the 'finest of margins' and involved a controversial win, indicating potential weaknesses. I predict Spain to win in regulation time, likely keeping a clean sheet given their defensive record. The high stakes of a knockout match between two European rivals will likely lead to a significant number of cards.",
+    "playbook_version": 6,
+    "saved_at": "2026-07-05T23:37:49.699889+00:00"
+  },
+  "792d4206-e4ad-4793-a362-e8599a59c5dc": {
+    "match": "USA vs Belgium",
+    "probs": {
+      "home": 0.3,
+      "draw": 0.36,
+      "away": 0.34
+    },
+    "pick": "away",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "This match is expected to be very closely contested, with the USA's home advantage in Seattle being a significant factor. However, the crucial suspension of Folarin Balogun is a major blow to their attacking threat. Belgium's dominant 5-2 victory in their recent friendly against the USA, combined with the presence of a strong attacker like Lukaku, gives them an edge. I predict a 90-minute draw as the most likely outcome, with Belgium ultimately advancing after extra time or penalties due to their overall quality and USA's key absence. High card count is anticipated due to the intensity of a knockout fixture.",
+    "playbook_version": 6,
+    "saved_at": "2026-07-05T23:37:50.754649+00:00"
   }
 }
