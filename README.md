@@ -61,19 +61,39 @@ Setup: `python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`, the
 CLI commands (all output also streams to `logs/current_run.txt`):
 
 ```bash
-.venv/bin/python -m src.cli run-daily-loop   # settle → reflect → evolve playbook → bet next 3
+.venv/bin/python -m src.cli run-daily-loop   # settle → reflect → evolve playbook → bet next N (BET_BATCH_SIZE=2)
 .venv/bin/python -m src.cli prebet           # fresh intel + re-place ALL upcoming bets (near kickoff)
+.venv/bin/python -m src.cli place-bets          # resume betting only (skip reflection; uses cached intel)
 .venv/bin/python -m src.cli reflect-only     # settle + reflect + evolve, no new bets
 .venv/bin/python -m src.cli check-models     # probe each configured Gemini model (quota check)
 ```
 
-Scheduler daemon (daily loop at 10:00 Europe/Brussels + one automatic `prebet` refresh 50 min before the earliest upcoming kickoff):
+Scheduler daemon (local laptop — optional once GitHub Actions is active):
 
 ```bash
-.venv/bin/python -m src.scheduler
+caffeinate -i .venv/bin/python -m src.scheduler
 ```
 
-Keep the laptop awake around job times (`caffeinate -i .venv/bin/python -m src.scheduler` prevents sleep while it runs). A missed job fires up to 30 min late; beyond that the morning's provisional bets stand.
+### GitHub Actions (recommended — lid-closed safe)
+
+Push to [github.com/elena-kalinina/AgentsPlaybook](https://github.com/elena-kalinina/AgentsPlaybook) and add these **repository secrets** (Settings → Secrets → Actions):
+
+| Secret | Value |
+|---|---|
+| `APP_MCP_SERVER_URL` | from `.env` |
+| `APP_MCP_SERVER_TOKEN` | from `.env` |
+| `CUP_CLASH_GROUP_ID` | from `.env` |
+| `GEMINI_API_KEY` | from `.env` |
+| `TAVILY_API_KEY` | from `.env` |
+
+Two workflows run automatically:
+
+- **Daily agent loop** — 10:00 Europe/Brussels: `reflect-only` then `place-bets` (separate steps so a summarize failure doesn't re-reflect). Pushes playbook + `data/` state back to the repo.
+- **Prebet refresh** — every 15 min 14:00–23:59 Brussels: `maybe-prebet` runs only inside the T−50 window.
+
+Manual trigger: Actions tab → workflow → **Run workflow**.
+
+Agent state files (`data/settled.json`, `data/predictions.json`, `data/metrics.json`, etc.) are committed to git so each CI run picks up where the last left off.
 
 Dashboard (playbook history + diffs, points and Brier charts, manual run buttons with live log):
 

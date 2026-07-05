@@ -25,6 +25,7 @@ class ModelRole(str, Enum):
 class _ModelSlot:
     primary: str
     fallback: str
+    overflow: str = ""
 
 
 class ModelRouter:
@@ -41,7 +42,9 @@ class ModelRouter:
         self.min_interval_sec = min_interval_sec
         self._last_call_at: dict[str, float] = {}
         self._slots = {
-            ModelRole.SUMMARIZE: _ModelSlot(routes.summarize, routes.summarize_fallback),
+            ModelRole.SUMMARIZE: _ModelSlot(
+                routes.summarize, routes.summarize_fallback, routes.summarize_overflow
+            ),
             ModelRole.ANALYZE: _ModelSlot(routes.analyze, routes.analyze_fallback),
             ModelRole.ACT: _ModelSlot(routes.act, routes.act_fallback),
         }
@@ -79,8 +82,8 @@ class ModelRouter:
         Costs one request per distinct model — used before relying on a new split.
         """
         names: list[str] = []
-        for slot in self._slots.values():
-            for name in (slot.primary, slot.fallback):
+        for role, slot in self._slots.items():
+            for name in self._model_chain(role):
                 if name not in names:
                     names.append(name)
 
@@ -97,7 +100,7 @@ class ModelRouter:
                 text = (response.text or "").strip()
                 results.append({"model": name, "status": "ok", "detail": text[:40]})
             except genai_errors.APIError as exc:
-                status = "quota" if exc.code == 429 else "error"
+                status = "quota" if exc.code == 429 else "overloaded" if exc.code == 503 else "error"
                 results.append({"model": name, "status": status, "detail": str(exc)[:200]})
             except Exception as exc:
                 results.append({"model": name, "status": "error", "detail": str(exc)[:200]})
@@ -125,7 +128,7 @@ class ModelRouter:
         max_retries: int = 3,
     ) -> str:
         slot = self._slots[role]
-        models = [slot.primary, slot.fallback]
+        models = self._model_chain(role)
         full_prompt = f"{system}\n\n{prompt}" if system else prompt
         last_exc: Exception | None = None
 
@@ -165,10 +168,33 @@ class ModelRouter:
 
             if model_name == slot.primary:
                 print(f"[gemini:{phase}] falling back {slot.primary} → {slot.fallback}")
+            elif (
+                role == ModelRole.SUMMARIZE
+                and model_name == slot.fallback
+                and len(models) > 2
+            ):
+                print(
+                    f"[gemini:{phase}] overflow fallback "
+                    f"{slot.fallback} → {models[2]}"
+                )
 
         raise RuntimeError(
             f"Gemini failed for role={role.value} phase={phase}: {last_exc}"
         )
+
+    def _model_chain(self, role: ModelRole) -> list[str]:
+        """Primary → fallback → optional overflow (deduped, separate quota buckets)."""
+        slot = self._slots[role]
+        chain = [slot.primary, slot.fallback]
+        if role == ModelRole.SUMMARIZE and slot.overflow:
+            chain.append(slot.overflow)
+        seen: set[str] = set()
+        out: list[str] = []
+        for name in chain:
+            if name not in seen:
+                seen.add(name)
+                out.append(name)
+        return out
 
     def _wait_for_rate_limit(self, model_name: str, phase: str) -> None:
         last = self._last_call_at.get(model_name, 0.0)

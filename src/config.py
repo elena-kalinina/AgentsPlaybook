@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 class ModelRoutes:
     summarize: str
     summarize_fallback: str
+    summarize_overflow: str
     analyze: str
     analyze_fallback: str
     act: str
@@ -39,6 +40,7 @@ class Settings:
     schedule_path: Path
     live_log_path: Path
     settled_path: Path
+    bet_batch_size: int
 
 
 def load_settings() -> Settings:
@@ -58,7 +60,10 @@ def load_settings() -> Settings:
         gemini_api_key=os.environ["GEMINI_API_KEY"],
         model_routes=ModelRoutes(
             summarize=summarize,
-            summarize_fallback=os.environ.get("GEMINI_MODEL_SUMMARIZE_FALLBACK", analyze),
+            summarize_fallback=os.environ.get("GEMINI_MODEL_SUMMARIZE_FALLBACK", "gemini-2.5-flash"),
+            summarize_overflow=os.environ.get(
+                "GEMINI_MODEL_SUMMARIZE_OVERFLOW", analyze
+            ),
             analyze=analyze,
             analyze_fallback=os.environ.get("GEMINI_MODEL_ANALYZE_FALLBACK", summarize),
             act=act,
@@ -75,4 +80,5 @@ def load_settings() -> Settings:
         schedule_path=ROOT / "data" / "schedule.json",
         live_log_path=ROOT / "logs" / "current_run.txt",
         settled_path=ROOT / "data" / "settled.json",
+        bet_batch_size=int(os.environ.get("BET_BATCH_SIZE", "2")),
     )

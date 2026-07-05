@@ -1,0 +1,142 @@
+{
+  "69ad2ecd-f9e7-4aa4-9d26-60ed74c11c82": {
+    "match": "Spain vs Austria",
+    "probs": {
+      "home": 0.65,
+      "draw": 0.22,
+      "away": 0.13
+    },
+    "pick": "home",
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "reasoning": "Spain's elite defense has kept clean sheets all tournament. Despite Williams' absence, Spain's possession control will stifle Austria. Following playbook rules, we avoid a consolation goal for the underdog, predicting a clean 2-0 win.",
+    "playbook_version": 3,
+    "saved_at": "2026-07-02T16:35:05.391059+00:00"
+  },
+  "bf139545-194e-4b0e-a4ac-c1b61b4e4836": {
+    "match": "Portugal vs Croatia",
+    "probs": {
+      "home": 0.42,
+      "draw": 0.35,
+      "away": 0.23
+    },
+    "pick": "home",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "Croatia's legendary resilience frequently drags knockout matches into extra time. We predict a 1-1 draw in 90 minutes. Applying the playbook tie-breaker, Portugal's superior squad depth and bench options will see them advance in extra time, making them the selected winner.",
+    "playbook_version": 3,
+    "saved_at": "2026-07-02T16:35:06.695536+00:00"
+  },
+  "9c527168-4b9a-44cf-a154-98d5fb6ed9c0": {
+    "match": "Switzerland vs Algeria",
+    "probs": {
+      "home": 0.5,
+      "draw": 0.3,
+      "away": 0.2
+    },
+    "pick": "home",
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "reasoning": "Switzerland's highly structured, low-scoring style matches up well against an Algeria side missing key forward Amoura. Expect a tight, disciplined tactical battle where the Swiss edge a narrow 1-0 victory.",
+    "playbook_version": 3,
+    "saved_at": "2026-07-02T16:35:07.158533+00:00"
+  },
+  "b5df880a-80f9-4b14-a69a-fcc99217ea5d": {
+    "match": "Australia vs Egypt",
+    "probs": {
+      "home": 0.27,
+      "draw": 0.31,
+      "away": 0.42
+    },
+    "pick": "away",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "Market favors Egypt slightly, and intel explicitly suggests a tight match with a 'decisive penalty shootout' possible. Predicting a 1-1 draw at 90 minutes, with Egypt advancing due to stronger squad depth and the presence of Mohamed Salah. The high initial draw probability supports this.",
+    "playbook_version": 4,
+    "saved_at": "2026-07-03T17:10:54.302672+00:00"
+  },
+  "ca04de7d-a39d-4ee5-ae15-897aeb4db875": {
+    "match": "Argentina vs Cape Verde Islands",
+    "probs": {
+      "home": 0.95,
+      "draw": 0.03,
+      "away": 0.02
+    },
+    "pick": "home",
+    "predicted_home_score": 3,
+    "predicted_away_score": 0,
+    "reasoning": "Argentina is an overwhelming favorite and reigning champion. Expecting a dominant performance and a clean sheet against Cape Verde, who are considered overachievers but outmatched. A 3-0 score aligns with the playbook's preference for clean margins over 1-0 grinds and avoiding consolation goals against elite defenses.",
+    "playbook_version": 4,
+    "saved_at": "2026-07-03T17:10:54.929842+00:00"
+  },
+  "e02eb1cd-0330-450e-8e92-a4e22f657f87": {
+    "match": "Colombia vs Ghana",
+    "probs": {
+      "home": 0.73,
+      "draw": 0.15,
+      "away": 0.12
+    },
+    "pick": "home",
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "reasoning": "Colombia is a clear favorite, topped their group, and boasts a strong defensive record (2 goals conceded in last six World Cup games). While intel suggests a tight, low-scoring affair ('less than 2.5 goals'), Colombia's quality and defensive solidity should secure a regulation win with a clean sheet. A 2-0 score is preferred over 1-0 for a clean margin.",
+    "playbook_version": 4,
+    "saved_at": "2026-07-03T17:10:55.410823+00:00"
+  },
+  "149c4c4f-56d2-4a67-816c-0d7fe6311d0e": {
+    "match": "Canada vs Morocco",
+    "probs": {
+      "home": 0.25,
+      "draw": 0.4,
+      "away": 0.35
+    },
+    "pick": "away",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "Morocco is favored by market and pedigree, having reached the 2022 semifinals and navigated a tough Round of 32 tie. Canada is on a historic run, and Alphonso Davies' potential start could boost their attack. The match is expected to be tight and physical, with a high likelihood of going to extra time. Morocco's experience, squad depth, and tournament pedigree are likely to see them advance after a 90-minute draw. The predicted draw probability is the highest, as per playbook rules for a level scoreline.",
+    "playbook_version": 5,
+    "saved_at": "2026-07-04T16:11:16.498503+00:00"
+  },
+  "a78db568-fa2f-451c-a272-9b1870c4f24f": {
+    "match": "Paraguay vs France",
+    "probs": {
+      "home": 0.1,
+      "draw": 0.2,
+      "away": 0.7
+    },
+    "pick": "away",
+    "predicted_home_score": 0,
+    "predicted_away_score": 2,
+    "reasoning": "France is a clear favorite with a formidable attacking lineup, led by Kylian Mbapp\u00e9, and a strong tournament showing so far. While Paraguay showed resilience against Germany in the previous round, France's offensive quality and expected dominance in possession are likely to secure a regulation win. The predicted score reflects France's attacking prowess while acknowledging the tighter nature of knockout matches.",
+    "playbook_version": 5,
+    "saved_at": "2026-07-04T16:11:17.392469+00:00"
+  },
+  "0a7ef0b7-b654-4e4d-a914-407293606b98": {
+    "match": "Brazil vs Norway",
+    "probs": {
+      "home": 0.38,
+      "draw": 0.4,
+      "away": 0.22
+    },
+    "pick": "home",
+    "predicted_home_score": 2,
+    "predicted_away_score": 2,
+    "reasoning": "Brazil, despite being market favorites, faces a formidable Norway side at full strength, spearheaded by Erling Haaland, and boasts an unbeaten head-to-head record. Brazil's injury concerns (Casemiro, Paqueta) and narrow last win suggest they might struggle to secure a regulation-time victory against a confident Norway. I predict a high-scoring draw in 90 minutes (2-2) due to both teams' attacking prowess and Brazil's defensive vulnerabilities. Brazil is picked to win the tie in extra time or penalties due to their overall squad depth and experience in high-pressure situations. The high stakes of a knockout match, combined with key attacking players, are likely to lead to a higher card count, including a potential late red card.",
+    "playbook_version": 6,
+    "saved_at": "2026-07-05T13:21:35.650846+00:00"
+  },
+  "c3f3e237-7a2a-4f6a-b31c-ca6a1d8ad902": {
+    "match": "Mexico vs England",
+    "probs": {
+      "home": 0.32,
+      "draw": 0.38,
+      "away": 0.3
+    },
+    "pick": "away",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "This match is finely balanced. While England is slightly favored and boasts Harry Kane's excellent form, Mexico holds significant advantages: an unbeaten run with clean sheets throughout the tournament, and the crucial high-altitude home advantage at Estadio Azteca. These factors strongly boost Mexico's chances of holding England to a draw in regulation time. I predict a 1-1 draw in 90 minutes, reflecting Mexico's defensive solidity against England's attacking threat. England is chosen to win the tie in extra time or penalties, banking on their deeper squad and big-game experience to overcome the altitude challenge in the extended period. The high stakes and physical nature of the game, exacerbated by altitude, are expected to result in a higher card count, including a potential red card.",
+    "playbook_version": 6,
+    "saved_at": "2026-07-05T13:21:36.596192+00:00"
+  }
+}

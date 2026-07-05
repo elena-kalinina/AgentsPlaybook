@@ -13,8 +13,4 @@ logs/*.jsonl
 logs/*.json
 logs/current_run.txt
 !logs/.gitkeep
-data/predictions.json
-data/intel_cache.json
-data/schedule.json
 data/run.lock
-data/settled.json

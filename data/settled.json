@@ -1,0 +1,78 @@
+{
+  "07c79454-ae2d-44b0-85cb-eafedf4395d6": {
+    "match": "France vs Sweden",
+    "points_awarded": 6,
+    "processed_at": "2026-07-03T15:49:24.930749+00:00",
+    "backfilled_from": "run_20260702T163507Z.json"
+  },
+  "10560642-065f-4c1f-800b-95fea12ea0ad": {
+    "match": "Mexico vs Ecuador",
+    "points_awarded": 7,
+    "processed_at": "2026-07-03T15:49:24.930752+00:00",
+    "backfilled_from": "run_20260702T163507Z.json"
+  },
+  "c6164360-5fd4-40ef-8c4b-f2e44e21720e": {
+    "match": "Ivory Coast vs Norway",
+    "points_awarded": 11,
+    "processed_at": "2026-07-03T15:49:24.930755+00:00",
+    "backfilled_from": "run_20260702T163507Z.json"
+  },
+  "1295258f-1b11-47b0-8034-a98f99fb9ffa": {
+    "match": "USA vs Bosnia & Herzegovina",
+    "points_awarded": 8,
+    "processed_at": "2026-07-03T15:49:24.930752+00:00",
+    "backfilled_from": "run_20260702T163507Z.json"
+  },
+  "87c62f86-7d44-40d7-b456-3937f14ed4ee": {
+    "match": "Belgium vs Senegal",
+    "points_awarded": 6,
+    "processed_at": "2026-07-03T15:49:24.930753+00:00",
+    "backfilled_from": "run_20260702T163507Z.json"
+  },
+  "9e9d2a3b-24dc-4f0e-b7ef-58ea0b886eb1": {
+    "match": "England vs Congo DR",
+    "points_awarded": 7,
+    "processed_at": "2026-07-03T15:49:24.930754+00:00",
+    "backfilled_from": "run_20260702T163507Z.json"
+  },
+  "69ad2ecd-f9e7-4aa4-9d26-60ed74c11c82": {
+    "match": "Spain vs Austria",
+    "points_awarded": 5,
+    "processed_at": "2026-07-03T15:55:14.465031+00:00"
+  },
+  "9c527168-4b9a-44cf-a154-98d5fb6ed9c0": {
+    "match": "Switzerland vs Algeria",
+    "points_awarded": 8,
+    "processed_at": "2026-07-03T15:55:14.465063+00:00"
+  },
+  "bf139545-194e-4b0e-a4ac-c1b61b4e4836": {
+    "match": "Portugal vs Croatia",
+    "points_awarded": 4,
+    "processed_at": "2026-07-03T15:55:14.465065+00:00"
+  },
+  "b5df880a-80f9-4b14-a69a-fcc99217ea5d": {
+    "match": "Australia vs Egypt",
+    "points_awarded": 12,
+    "processed_at": "2026-07-04T08:47:55.776917+00:00"
+  },
+  "ca04de7d-a39d-4ee5-ae15-897aeb4db875": {
+    "match": "Argentina vs Cape Verde Islands",
+    "points_awarded": 7,
+    "processed_at": "2026-07-04T08:47:55.776943+00:00"
+  },
+  "e02eb1cd-0330-450e-8e92-a4e22f657f87": {
+    "match": "Colombia vs Ghana",
+    "points_awarded": 4,
+    "processed_at": "2026-07-04T08:47:55.776946+00:00"
+  },
+  "149c4c4f-56d2-4a67-816c-0d7fe6311d0e": {
+    "match": "Canada vs Morocco",
+    "points_awarded": 4,
+    "processed_at": "2026-07-05T08:02:36.472892+00:00"
+  },
+  "a78db568-fa2f-451c-a272-9b1870c4f24f": {
+    "match": "Paraguay vs France",
+    "points_awarded": 6,
+    "processed_at": "2026-07-05T08:02:36.472910+00:00"
+  }
+}

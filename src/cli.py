@@ -6,7 +6,7 @@ import argparse
 import sys
 
 from src.config import load_settings
-from src.loop.daily import run_daily_loop, run_prebet_refresh, run_reflect_only
+from src.loop.daily import run_daily_loop, run_maybe_prebet, run_place_bets_only, run_prebet_refresh, run_reflect_only
 from src.loop.livelog import live_log
 
 
@@ -14,11 +14,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Cup Clash agent runner")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    sub.add_parser("run-daily-loop", help="Settle → reflect → evolve → place next 3 bets")
+    sub.add_parser("run-daily-loop", help="Settle → reflect → evolve → place next N bets (BET_BATCH_SIZE)")
 
     sub.add_parser(
         "prebet",
         help="Refresh intel and re-place bets for ALL upcoming matches (run near kickoff)",
+    )
+
+    sub.add_parser(
+        "place-bets",
+        help="Resume from phase 5: place bets only (no reflection, uses cached Tavily intel)",
+    )
+
+    sub.add_parser(
+        "maybe-prebet",
+        help="Run prebet only if inside T-50 window (for GitHub Actions polling)",
     )
 
     reflect = sub.add_parser(
@@ -54,6 +64,16 @@ def main(argv: list[str] | None = None) -> int:
             run_prebet_refresh(settings)
         return 0
 
+    if args.command == "place-bets":
+        with live_log(settings.live_log_path):
+            run_place_bets_only(settings)
+        return 0
+
+    if args.command == "maybe-prebet":
+        with live_log(settings.live_log_path):
+            run_maybe_prebet(settings)
+        return 0
+
     if args.command == "reflect-only":
         with live_log(settings.live_log_path):
             run_reflect_only(settings, force_evolve=args.force_evolve)
@@ -65,7 +85,8 @@ def main(argv: list[str] | None = None) -> int:
         router = ModelRouter.from_settings(settings)
         routes = settings.model_routes
         print(
-            f"Routes: summarize={routes.summarize} (fb {routes.summarize_fallback}), "
+            f"Routes: summarize={routes.summarize} (fb {routes.summarize_fallback}, "
+            f"overflow {routes.summarize_overflow}), "
             f"analyze={routes.analyze} (fb {routes.analyze_fallback}), "
             f"act={routes.act} (fb {routes.act_fallback})"
         )
