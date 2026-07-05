@@ -89,7 +89,7 @@ Push to [github.com/elena-kalinina/AgentsPlaybook](https://github.com/elena-kali
 Two workflows run automatically:
 
 - **Daily agent loop** — 10:00 Europe/Brussels: `reflect-only` then `place-bets` (separate steps so a summarize failure doesn't re-reflect). Pushes playbook + `data/` state back to the repo.
-- **Prebet refresh** — every 15 min 14:00–23:59 Brussels: `maybe-prebet` runs only inside the T−50 window.
+- **Prebet refresh** — every 15 min (24h, Europe/Brussels): `maybe-prebet` runs only inside the T−50 window.
 
 Manual trigger: Actions tab → workflow → **Run workflow**.
 

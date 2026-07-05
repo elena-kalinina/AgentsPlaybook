@@ -2,8 +2,8 @@ name: Prebet refresh
 
 on:
   schedule:
-    # Poll every 15 min (14:00–23:59 Brussels) — runs prebet only inside T-50 window
-    - cron: "*/15 14-23 * * *"
+    # Poll every 15 min, 24h — maybe-prebet no-ops outside the T-50 window
+    - cron: "*/15 * * * *"
       timezone: Europe/Brussels
   workflow_dispatch:
 
