@@ -19,6 +19,7 @@ from src.mcp.client import McpClient
 from src.loop import settled
 from src.metrics.brier import append_metrics, compute_brier, rolling_brier
 from src.loop.prebet_gate import mark_prebet_done, prebet_window_status
+from src.playbook import predictions_store
 from src.playbook import store as playbook_store
 
 SYSTEM_PROMPT = """You are a Cup Clash prediction agent specializing in **knockout-phase**
