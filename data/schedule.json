@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-06T09:27:46.990305+00:00",
+  "updated_at": "2026-07-06T09:40:37.088233+00:00",
   "matches": [
     {
       "match_id": "1b723170-8b92-4722-bb24-219dfebbe795",
@@ -20,14 +20,14 @@
       "match": "Argentina vs Egypt",
       "kickoff_at": "2026-07-07T16:00:00+00:00",
       "stage": "knockout",
-      "has_bet": false
+      "has_bet": true
     },
     {
       "match_id": "a5626918-6f0f-42b8-a6c4-0753c6116f00",
       "match": "Switzerland vs Colombia",
       "kickoff_at": "2026-07-07T20:00:00+00:00",
       "stage": "knockout",
-      "has_bet": false
+      "has_bet": true
     }
   ]
 }
