@@ -27,6 +27,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Configure git for playbook commits
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
       - name: Reflect and evolve playbook
         env:
           APP_MCP_SERVER_URL: ${{ secrets.APP_MCP_SERVER_URL }}
