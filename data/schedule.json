@@ -1,13 +1,6 @@
 {
-  "updated_at": "2026-07-05T23:37:15.534809+00:00",
+  "updated_at": "2026-07-06T09:27:46.990305+00:00",
   "matches": [
-    {
-      "match_id": "c3f3e237-7a2a-4f6a-b31c-ca6a1d8ad902",
-      "match": "Mexico vs England",
-      "kickoff_at": "2026-07-06T00:00:00+00:00",
-      "stage": "knockout",
-      "has_bet": true
-    },
     {
       "match_id": "1b723170-8b92-4722-bb24-219dfebbe795",
       "match": "Portugal vs Spain",
@@ -21,6 +14,20 @@
       "kickoff_at": "2026-07-07T00:00:00+00:00",
       "stage": "knockout",
       "has_bet": true
+    },
+    {
+      "match_id": "9f9ea02a-150d-4cc7-826e-86167ed05427",
+      "match": "Argentina vs Egypt",
+      "kickoff_at": "2026-07-07T16:00:00+00:00",
+      "stage": "knockout",
+      "has_bet": false
+    },
+    {
+      "match_id": "a5626918-6f0f-42b8-a6c4-0753c6116f00",
+      "match": "Switzerland vs Colombia",
+      "kickoff_at": "2026-07-07T20:00:00+00:00",
+      "stage": "knockout",
+      "has_bet": false
     }
   ]
 }

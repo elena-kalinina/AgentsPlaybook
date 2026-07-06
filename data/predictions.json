@@ -166,5 +166,33 @@
     "reasoning": "This match is expected to be very closely contested, with the USA's home advantage in Seattle being a significant factor. However, the crucial suspension of Folarin Balogun is a major blow to their attacking threat. Belgium's dominant 5-2 victory in their recent friendly against the USA, combined with the presence of a strong attacker like Lukaku, gives them an edge. I predict a 90-minute draw as the most likely outcome, with Belgium ultimately advancing after extra time or penalties due to their overall quality and USA's key absence. High card count is anticipated due to the intensity of a knockout fixture.",
     "playbook_version": 6,
     "saved_at": "2026-07-05T23:37:50.754649+00:00"
+  },
+  "9f9ea02a-150d-4cc7-826e-86167ed05427": {
+    "match": "Argentina vs Egypt",
+    "probs": {
+      "home": 0.73,
+      "draw": 0.17,
+      "away": 0.1
+    },
+    "pick": "home",
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "reasoning": "Argentina is the clear favorite with superior attacking talent, led by Messi. Egypt's defensive injuries will be exploited, and while they can be attritional, Argentina should secure a regulation win. The score reflects a solid win without overstating the goal difference, acknowledging Egypt's potential to defend.",
+    "playbook_version": 7,
+    "saved_at": "2026-07-06T09:28:13.132646+00:00"
+  },
+  "a5626918-6f0f-42b8-a6c4-0753c6116f00": {
+    "match": "Switzerland vs Colombia",
+    "probs": {
+      "home": 0.38,
+      "draw": 0.3,
+      "away": 0.32
+    },
+    "pick": "away",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "This is expected to be a very tight, tactical match likely going to extra time or penalties, as indicated by the high draw probability and market view. Switzerland's strong defense will make it difficult for Colombia, but Colombia's attacking talent, particularly Luis Diaz, should find a way to score. I predict a 1-1 draw in regulation, with Colombia ultimately advancing due to their ability to grind out results and the market's slight favor towards them for the tie. My winner pick for the tie differs from the raw 90-minute probabilities, which slightly favor Switzerland.",
+    "playbook_version": 7,
+    "saved_at": "2026-07-06T09:28:15.223665+00:00"
   }
 }
