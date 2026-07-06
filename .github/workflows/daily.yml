@@ -68,7 +68,7 @@ jobs:
           GEMINI_MODEL_ACT_FALLBACK: gemini-2.5-flash-lite
           GEMINI_MIN_INTERVAL_SEC: "10"
           BET_BATCH_SIZE: "2"
-        run: python -m src.cli place-bets
+        run: python -m src.cli place-bets --daily-cycle
 
       - name: Push playbook and state
         run: bash scripts/ci_push_state.sh

@@ -18,7 +18,8 @@ from src.loop.knockout import (
 from src.mcp.client import McpClient
 from src.loop import settled
 from src.metrics.brier import append_metrics, compute_brier, rolling_brier
-from src.loop.prebet_gate import mark_prebet_done, prebet_window_status
+from src.loop.prebet_gate import mark_prebet_done, prebet_window_status, reset_for_daily_cycle
+from src.loop import daily_state
 from src.playbook import predictions_store
 from src.playbook import store as playbook_store
 
@@ -208,18 +209,25 @@ def run_prebet_refresh(settings: Settings) -> dict[str, Any]:
     run_log["model_usage"] = router.usage_summary()
     _finish_run(settings, run_log)
     if targets:
-        earliest = min(
-            (m.get("kickoff_at") for m in targets if m.get("kickoff_at")),
-            default=None,
-        )
-        if earliest:
-            mark_prebet_done(settings, earliest)
+        for match in targets:
+            ko = _parse_kickoff_iso(match.get("kickoff_at"))
+            if ko:
+                mark_prebet_done(settings, ko)
     print("\n==> Prebet refresh complete.")
     return run_log
 
 
+def _parse_kickoff_iso(value: str | None) -> str | None:
+    if not value:
+        return None
+    from src.loop.prebet_gate import _parse_kickoff
+
+    dt = _parse_kickoff(value)
+    return dt.isoformat() if dt else None
+
+
 def run_maybe_prebet(settings: Settings) -> dict[str, Any]:
-    """Run prebet only if inside the T-50 window and not already done for this kickoff."""
+    """Run prebet only if daily cycle is done and we're in a T-50 window."""
     status = prebet_window_status(settings)
     print(f"Prebet gate: {status}")
     if not status.get("in_window"):
@@ -227,7 +235,7 @@ def run_maybe_prebet(settings: Settings) -> dict[str, Any]:
     return run_prebet_refresh(settings)
 
 
-def run_place_bets_only(settings: Settings) -> dict[str, Any]:
+def run_place_bets_only(settings: Settings, *, mark_daily_cycle: bool = False) -> dict[str, Any]:
     """Resume from phase 5: scan → research (cached if available) → summarize → bet.
 
     Skips settle / reflect / evolve — use when the morning daily loop updated the
@@ -245,6 +253,10 @@ def run_place_bets_only(settings: Settings) -> dict[str, Any]:
     _scan_and_bet_phase(mcp, router, tavily, settings, playbook, run_log)
     run_log["model_usage"] = router.usage_summary()
     _finish_run(settings, run_log)
+    if mark_daily_cycle:
+        daily_state.mark_complete(settings)
+        reset_for_daily_cycle(settings, datetime.now(daily_state.BRUSSELS).date().isoformat())
+        print("    daily cycle marked complete — prebet window opens after 10:00")
     print("\n==> Place-bets complete.")
     return run_log
 

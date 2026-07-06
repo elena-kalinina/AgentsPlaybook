@@ -21,9 +21,14 @@ def main(argv: list[str] | None = None) -> int:
         help="Refresh intel and re-place bets for ALL upcoming matches (run near kickoff)",
     )
 
-    sub.add_parser(
+    place = sub.add_parser(
         "place-bets",
         help="Resume from phase 5: place bets only (no reflection, uses cached Tavily intel)",
+    )
+    place.add_argument(
+        "--daily-cycle",
+        action="store_true",
+        help="Mark morning daily cycle complete (enables prebet for today)",
     )
 
     sub.add_parser(
@@ -66,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "place-bets":
         with live_log(settings.live_log_path):
-            run_place_bets_only(settings)
+            run_place_bets_only(settings, mark_daily_cycle=args.daily_cycle)
         return 0
 
     if args.command == "maybe-prebet":

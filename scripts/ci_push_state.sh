@@ -13,7 +13,8 @@ git add playbooks/playbook.md \
   data/metrics.json \
   data/intel_cache.json \
   data/schedule.json \
-  data/prebet_state.json 2>/dev/null || true
+  data/prebet_state.json \
+  data/daily_state.json 2>/dev/null || true
 
 if git diff --staged --quiet; then
   echo "No agent artifacts to push."
