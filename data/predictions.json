@@ -170,29 +170,29 @@
   "9f9ea02a-150d-4cc7-826e-86167ed05427": {
     "match": "Argentina vs Egypt",
     "probs": {
-      "home": 0.65,
-      "draw": 0.2,
-      "away": 0.15
+      "home": 0.75,
+      "draw": 0.15,
+      "away": 0.1
     },
     "pick": "home",
     "predicted_home_score": 2,
     "predicted_away_score": 0,
-    "reasoning": "Argentina is a strong favorite against Egypt. Despite showing some fatigue in their last match, their offensive firepower, led by Messi, is expected to secure a regulation win in a low-scoring affair.",
-    "playbook_version": 7,
-    "saved_at": "2026-07-06T23:48:10.828744+00:00"
+    "reasoning": "Argentina is heavily favored with Lionel Messi confirmed to start. Despite Egypt's resilience shown in their penalty shootout win, Argentina's attacking intent and overall quality should secure a regulation victory. The score reflects Argentina's expected dominance while acknowledging Egypt's potential to make it a physical encounter, leading to a few yellow cards.",
+    "playbook_version": 8,
+    "saved_at": "2026-07-07T15:57:02.937913+00:00"
   },
   "a5626918-6f0f-42b8-a6c4-0753c6116f00": {
     "match": "Switzerland vs Colombia",
     "probs": {
-      "home": 0.35,
-      "draw": 0.35,
+      "home": 0.4,
+      "draw": 0.3,
       "away": 0.3
     },
     "pick": "home",
     "predicted_home_score": 1,
     "predicted_away_score": 1,
-    "reasoning": "This is expected to be a very close match. The intel strongly suggests a 1-1 draw after 90 minutes, with Switzerland's penalty shootout skills leading them to advance. Therefore, Switzerland is picked as the winner of the tie.",
-    "playbook_version": 7,
-    "saved_at": "2026-07-06T23:48:11.848591+00:00"
+    "reasoning": "This match is anticipated to be very competitive, with a high likelihood of extra time and penalties, as reflected by the close market odds and probabilities. Switzerland's defensive solidity against Algeria suggests they can hold Colombia's individual brilliance. Predicting a 1-1 regulation draw, with Switzerland advancing due to their slightly favored status and structured play. The competitive nature of the match warrants a moderate number of yellow cards.",
+    "playbook_version": 8,
+    "saved_at": "2026-07-07T15:57:04.398675+00:00"
   }
 }
