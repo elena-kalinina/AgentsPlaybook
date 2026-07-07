@@ -84,5 +84,15 @@
     "match": "Mexico vs England",
     "points_awarded": 7,
     "processed_at": "2026-07-06T09:27:41.937465+00:00"
+  },
+  "1b723170-8b92-4722-bb24-219dfebbe795": {
+    "match": "Portugal vs Spain",
+    "points_awarded": 9,
+    "processed_at": "2026-07-07T09:54:37.581075+00:00"
+  },
+  "792d4206-e4ad-4793-a362-e8599a59c5dc": {
+    "match": "USA vs Belgium",
+    "points_awarded": 4,
+    "processed_at": "2026-07-07T09:54:37.581087+00:00"
   }
 }
