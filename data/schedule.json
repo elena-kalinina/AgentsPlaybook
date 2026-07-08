@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-07-08T09:27:03.329115+00:00",
+  "updated_at": "2026-07-08T10:12:47.544612+00:00",
   "matches": [
     {
       "match_id": "5b63ad5a-7a79-47a1-bc24-76a594f97e71",
       "match": "France vs Morocco",
       "kickoff_at": "2026-07-09T20:00:00+00:00",
       "stage": "knockout",
-      "has_bet": false
+      "has_bet": true
     }
   ]
 }
