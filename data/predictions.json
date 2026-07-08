@@ -194,5 +194,19 @@
     "reasoning": "This match is anticipated to be very competitive, with a high likelihood of extra time and penalties, as reflected by the close market odds and probabilities. Switzerland's defensive solidity against Algeria suggests they can hold Colombia's individual brilliance. Predicting a 1-1 regulation draw, with Switzerland advancing due to their slightly favored status and structured play. The competitive nature of the match warrants a moderate number of yellow cards.",
     "playbook_version": 8,
     "saved_at": "2026-07-07T15:57:04.398675+00:00"
+  },
+  "5b63ad5a-7a79-47a1-bc24-76a594f97e71": {
+    "match": "France vs Morocco",
+    "probs": {
+      "home": 0.6,
+      "draw": 0.28,
+      "away": 0.12
+    },
+    "pick": "home",
+    "predicted_home_score": 2,
+    "predicted_away_score": 1,
+    "reasoning": "France is heavily favored, and their attack, led by Mbappe, is expected to overcome Morocco's defense. While Morocco has shown defensive resilience and the match is anticipated to be competitive, the playbook advises against defaulting to draws for underdogs against elite favorites. The intel suggests an 'open' match with 'both teams scoring', leading to a 2-1 regulation win for France. The probabilities reflect France as the most likely winner in 90 minutes, with a significant chance of a draw given the 'close contest' expectation. Yellow cards are set at 3, anticipating a high-stakes, competitive knockout match.",
+    "playbook_version": 9,
+    "saved_at": "2026-07-08T09:27:23.518377+00:00"
   }
 }

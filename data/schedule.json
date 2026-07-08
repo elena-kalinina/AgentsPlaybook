@@ -1,19 +1,12 @@
 {
-  "updated_at": "2026-07-07T15:56:39.090631+00:00",
+  "updated_at": "2026-07-08T09:27:03.329115+00:00",
   "matches": [
     {
-      "match_id": "9f9ea02a-150d-4cc7-826e-86167ed05427",
-      "match": "Argentina vs Egypt",
-      "kickoff_at": "2026-07-07T16:00:00+00:00",
+      "match_id": "5b63ad5a-7a79-47a1-bc24-76a594f97e71",
+      "match": "France vs Morocco",
+      "kickoff_at": "2026-07-09T20:00:00+00:00",
       "stage": "knockout",
-      "has_bet": true
-    },
-    {
-      "match_id": "a5626918-6f0f-42b8-a6c4-0753c6116f00",
-      "match": "Switzerland vs Colombia",
-      "kickoff_at": "2026-07-07T20:00:00+00:00",
-      "stage": "knockout",
-      "has_bet": true
+      "has_bet": false
     }
   ]
 }

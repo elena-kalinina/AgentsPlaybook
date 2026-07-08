@@ -94,5 +94,15 @@
     "match": "USA vs Belgium",
     "points_awarded": 4,
     "processed_at": "2026-07-07T09:54:37.581087+00:00"
+  },
+  "9f9ea02a-150d-4cc7-826e-86167ed05427": {
+    "match": "Argentina vs Egypt",
+    "points_awarded": 6,
+    "processed_at": "2026-07-08T09:27:00.412022+00:00"
+  },
+  "a5626918-6f0f-42b8-a6c4-0753c6116f00": {
+    "match": "Switzerland vs Colombia",
+    "points_awarded": 6,
+    "processed_at": "2026-07-08T09:27:00.412035+00:00"
   }
 }

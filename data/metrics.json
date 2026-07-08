@@ -82,5 +82,19 @@
     "brier_score": 0.855,
     "points_awarded": 4,
     "recorded_at": "2026-07-07T09:53:46.890382+00:00"
+  },
+  {
+    "match_id": "9f9ea02a-150d-4cc7-826e-86167ed05427",
+    "match": "Argentina vs Egypt",
+    "brier_score": 0.095,
+    "points_awarded": 6,
+    "recorded_at": "2026-07-08T09:26:26.717285+00:00"
+  },
+  {
+    "match_id": "a5626918-6f0f-42b8-a6c4-0753c6116f00",
+    "match": "Switzerland vs Colombia",
+    "brier_score": 0.74,
+    "points_awarded": 6,
+    "recorded_at": "2026-07-08T09:26:26.717299+00:00"
   }
 ]
