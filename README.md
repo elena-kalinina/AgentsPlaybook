@@ -88,10 +88,19 @@ Push to [github.com/elena-kalinina/AgentsPlaybook](https://github.com/elena-kali
 
 Two workflows run automatically:
 
-- **Daily agent loop** — 10:00 Europe/Brussels: `reflect-only` then `place-bets` (separate steps so a summarize failure doesn't re-reflect). Pushes playbook + `data/` state back to the repo.
+- **Daily agent loop** — scheduled **10:00 Europe/Brussels** (`reflect-only` then `place-bets`). Pushes playbook + `data/` state back to the repo.
 - **Prebet refresh** — every 15 min (24h): runs only **after today's 10:00 daily cycle** completes, then refreshes **one match at a time** at T−50 before that kickoff. Polling continues until the last game starts.
 
-**Note:** GitHub Actions scheduled workflows often start **15–60+ minutes late** on the free tier. The daily cron is 10:00 Brussels; runs at 12:00–14:00 are normal queue delay, not a timezone bug.
+### Expected timing (GitHub Actions)
+
+GitHub does **not** start scheduled workflows exactly on time. On the free tier, queue delays of 15–60+ minutes are normal — this is not a timezone or cron bug in this repo.
+
+| Job | Cron target | Typical actual start |
+|---|---|---|
+| Daily loop | 10:00 Brussels | **10:00–14:00** Brussels |
+| Prebet | every 15 min | within ~15 min of poll time |
+
+If you need the morning run before a specific deadline, use **Actions → Daily agent loop → Run workflow** manually. Prebet still fires on its own T−50 windows once `daily_state.json` is set for the day.
 
 Manual trigger: Actions tab → workflow → **Run workflow**.
 
