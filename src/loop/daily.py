@@ -174,11 +174,11 @@ as the tie winner. Return JSON:
     return fixes
 
 
-def run_prebet_refresh(settings: Settings) -> dict[str, Any]:
-    """Refresh intel and re-place bets for ALL upcoming matches we already bet on.
+def run_prebet_refresh(settings: Settings, *, target_kickoff: str | None = None) -> dict[str, Any]:
+    """Refresh intel and re-place bets for matches in the current T-50 window.
 
-    Runs ~50 min before the earliest kickoff (scheduler) or on demand (CLI/dashboard).
-    The morning's provisional bets stay in place if anything here fails.
+    When target_kickoff is set (normal CI path), only that match is refreshed.
+    When omitted (manual CLI), all upcoming bets are refreshed.
     """
     mcp, router, tavily = _clients(settings)
     playbook = playbook_store.read_playbook(settings.playbook_path)
@@ -188,11 +188,21 @@ def run_prebet_refresh(settings: Settings) -> dict[str, Any]:
         "phases": [],
     }
 
-    print("\n==> PREBET: refreshing all upcoming bets with latest intel")
+    print("\n==> PREBET: refreshing bets with latest intel")
     upcoming = mcp.list_upcoming_matches(settings.group_id, limit=10)
     _write_schedule(settings, upcoming)
     targets = [m for m in upcoming if m.get("my_bet")]
-    if not targets:
+    if target_kickoff:
+        targets = [
+            m
+            for m in targets
+            if _parse_kickoff_iso(m.get("kickoff_at")) == target_kickoff
+        ]
+        if not targets:
+            print(f"    no bet found for kickoff {target_kickoff}")
+            return run_log
+        print(f"    T-50 window for kickoff {target_kickoff}")
+    elif not targets:
         # Fallback: morning run didn't happen — bet on the next batch without existing bets.
         targets = [m for m in upcoming if not m.get("my_bet")][: settings.bet_batch_size]
     run_log["phases"].append({"phase": "scan", "targets": targets})
@@ -209,10 +219,13 @@ def run_prebet_refresh(settings: Settings) -> dict[str, Any]:
     run_log["model_usage"] = router.usage_summary()
     _finish_run(settings, run_log)
     if targets:
-        for match in targets:
-            ko = _parse_kickoff_iso(match.get("kickoff_at"))
-            if ko:
-                mark_prebet_done(settings, ko)
+        if target_kickoff:
+            mark_prebet_done(settings, target_kickoff)
+        else:
+            for match in targets:
+                ko = _parse_kickoff_iso(match.get("kickoff_at"))
+                if ko:
+                    mark_prebet_done(settings, ko)
     print("\n==> Prebet refresh complete.")
     return run_log
 
@@ -232,7 +245,7 @@ def run_maybe_prebet(settings: Settings) -> dict[str, Any]:
     print(f"Prebet gate: {status}")
     if not status.get("in_window"):
         return {"mode": "maybe-prebet", "skipped": True, "status": status}
-    return run_prebet_refresh(settings)
+    return run_prebet_refresh(settings, target_kickoff=status.get("target_kickoff"))
 
 
 def run_place_bets_only(settings: Settings, *, mark_daily_cycle: bool = False) -> dict[str, Any]:

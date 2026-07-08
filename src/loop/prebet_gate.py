@@ -62,7 +62,7 @@ def prebet_window_status(settings: Settings) -> dict[str, Any]:
 
     Rules:
     - Today's daily loop (reflect + place-bets) must have finished (after 10:00 Brussels).
-    - Refresh at T-50 before each upcoming bet's kickoff (not before daily finished).
+    - Refresh at T-50 before **each** kickoff (one match per run, not all games at once).
     - Polling stays active until the last bet's kickoff has passed (then no-ops).
     """
     daily_ok, daily_done_at, daily_reason = daily_state.ready_for_prebet(settings)
