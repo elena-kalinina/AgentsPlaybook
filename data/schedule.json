@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-08T10:12:47.544612+00:00",
+  "updated_at": "2026-07-09T10:50:42.274298+00:00",
   "matches": [
     {
       "match_id": "5b63ad5a-7a79-47a1-bc24-76a594f97e71",
@@ -7,6 +7,13 @@
       "kickoff_at": "2026-07-09T20:00:00+00:00",
       "stage": "knockout",
       "has_bet": true
+    },
+    {
+      "match_id": "abab9243-de8f-4f6a-aa18-a2418c8760f3",
+      "match": "Spain vs Belgium",
+      "kickoff_at": "2026-07-10T19:00:00+00:00",
+      "stage": "knockout",
+      "has_bet": false
     }
   ]
 }
