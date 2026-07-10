@@ -222,5 +222,33 @@
     "reasoning": "This quarter-final is expected to be a tense, closely contested affair between two European giants. While Spain is favored, Belgium showed attacking strength in their last match. Spain's recent 1-0 win against Portugal suggests they can grind out results, but Belgium's offensive talent makes a clean sheet difficult. I anticipate a 90-minute draw, likely 1-1, with Spain ultimately advancing after extra time or penalties due to their overall tournament form and deeper squad quality. The high stakes suggest a moderate to high card count. My probabilities reflect a strong chance of a 90-minute draw, aligning with the playbook's requirement for draw probability to be highest or tied-highest when predicting a level score.",
     "playbook_version": 9,
     "saved_at": "2026-07-09T10:51:53.489053+00:00"
+  },
+  "7592babd-057c-47bc-89d9-4196252b2c10": {
+    "match": "Norway vs England",
+    "probs": {
+      "home": 0.24,
+      "draw": 0.35,
+      "away": 0.41
+    },
+    "pick": "away",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "England is favored, but Norway's attack is potent and England has defensive issues. The intel suggests a tight match, potentially going to extra time. I'm predicting a draw at 90 minutes with England winning the tie.",
+    "playbook_version": 10,
+    "saved_at": "2026-07-10T10:56:19.117997+00:00"
+  },
+  "45eadab2-4042-4555-99a1-27934b6ad1a2": {
+    "match": "Argentina vs Switzerland",
+    "probs": {
+      "home": 0.55,
+      "draw": 0.27,
+      "away": 0.18
+    },
+    "pick": "home",
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "reasoning": "Argentina is the clear favorite, but Switzerland's defense is formidable. The intel points to a low-scoring, tactical game. I expect Argentina to eventually break through, but it could be a tight affair.",
+    "playbook_version": 10,
+    "saved_at": "2026-07-10T10:56:21.850410+00:00"
   }
 }

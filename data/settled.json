@@ -104,5 +104,10 @@
     "match": "Switzerland vs Colombia",
     "points_awarded": 6,
     "processed_at": "2026-07-08T09:27:00.412035+00:00"
+  },
+  "5b63ad5a-7a79-47a1-bc24-76a594f97e71": {
+    "match": "France vs Morocco",
+    "points_awarded": 6,
+    "processed_at": "2026-07-10T10:50:47.673292+00:00"
   }
 }

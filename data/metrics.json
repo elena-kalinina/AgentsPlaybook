@@ -96,5 +96,12 @@
     "brier_score": 0.74,
     "points_awarded": 6,
     "recorded_at": "2026-07-08T09:26:26.717299+00:00"
+  },
+  {
+    "match_id": "5b63ad5a-7a79-47a1-bc24-76a594f97e71",
+    "match": "France vs Morocco",
+    "brier_score": 0.2528,
+    "points_awarded": 6,
+    "recorded_at": "2026-07-10T10:49:24.156421+00:00"
   }
 ]
