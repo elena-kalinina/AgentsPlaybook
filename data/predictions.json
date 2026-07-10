@@ -212,16 +212,16 @@
   "abab9243-de8f-4f6a-aa18-a2418c8760f3": {
     "match": "Spain vs Belgium",
     "probs": {
-      "home": 0.4,
-      "draw": 0.4,
-      "away": 0.2
+      "home": 0.65,
+      "draw": 0.2,
+      "away": 0.15
     },
     "pick": "home",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "reasoning": "This quarter-final is expected to be a tense, closely contested affair between two European giants. While Spain is favored, Belgium showed attacking strength in their last match. Spain's recent 1-0 win against Portugal suggests they can grind out results, but Belgium's offensive talent makes a clean sheet difficult. I anticipate a 90-minute draw, likely 1-1, with Spain ultimately advancing after extra time or penalties due to their overall tournament form and deeper squad quality. The high stakes suggest a moderate to high card count. My probabilities reflect a strong chance of a 90-minute draw, aligning with the playbook's requirement for draw probability to be highest or tied-highest when predicting a level score.",
-    "playbook_version": 9,
-    "saved_at": "2026-07-09T10:51:53.489053+00:00"
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "reasoning": "Spain enters this quarter-final as strong favorites, boasting an impeccable defensive record with no goals conceded in five World Cup matches. While Belgium has shown attacking prowess and an impressive unbeaten run, the absence of Amadou Onana weakens their midfield. Spain's historical dominance over Belgium (undefeated in 11 meetings) and their recent knockout wins against strong opponents further solidify their position. I anticipate Spain's formidable defense will hold firm, leading to a regulation win. The score prediction of 2-0 aligns with the playbook's heuristic for in-form favorites achieving clean-sheet victories. Yellow cards are set at 3, reflecting high stakes but not excessive aggression, and no red cards are predicted given the lack of specific intel. Lamine Yamal is chosen as the favourite player due to his form and potential impact.",
+    "playbook_version": 10,
+    "saved_at": "2026-07-10T18:41:24.065430+00:00"
   },
   "7592babd-057c-47bc-89d9-4196252b2c10": {
     "match": "Norway vs England",
