@@ -226,16 +226,16 @@
   "7592babd-057c-47bc-89d9-4196252b2c10": {
     "match": "Norway vs England",
     "probs": {
-      "home": 0.24,
-      "draw": 0.35,
-      "away": 0.41
+      "home": 0.2,
+      "draw": 0.4,
+      "away": 0.4
     },
     "pick": "away",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "reasoning": "England is favored, but Norway's attack is potent and England has defensive issues. The intel suggests a tight match, potentially going to extra time. I'm predicting a draw at 90 minutes with England winning the tie.",
-    "playbook_version": 10,
-    "saved_at": "2026-07-10T10:56:19.117997+00:00"
+    "predicted_home_score": 2,
+    "predicted_away_score": 2,
+    "reasoning": "England is favored to advance, but Norway's Erling Haaland is a significant goal threat, making a high-scoring 90-minute draw plausible. England's overall quality and depth are expected to see them through in extra time or penalties. The predicted 90-minute draw probability is tied highest, aligning with playbook rules for level-score predictions.",
+    "playbook_version": 11,
+    "saved_at": "2026-07-11T20:56:59.310937+00:00"
   },
   "45eadab2-4042-4555-99a1-27934b6ad1a2": {
     "match": "Argentina vs Switzerland",
