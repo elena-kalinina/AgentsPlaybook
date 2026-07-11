@@ -146,31 +146,38 @@ with tab_perf:
     total_points = sum(b.get("points_awarded") or 0 for b in finished)
     metrics_history = load_json(settings.metrics_path, [])
     brier_scores = [m["brier_score"] for m in metrics_history if m.get("brier_score") is not None]
-    rolling = sum(brier_scores[-5:]) / len(brier_scores[-5:]) if brier_scores else None
+    rolling_brier = sum(brier_scores[-5:]) / len(brier_scores[-5:]) if brier_scores else None
+
+    ordered_finished = sorted(finished, key=lambda b: b.get("kickoff_at") or "")
+    point_scores = [b.get("points_awarded") or 0 for b in ordered_finished]
+    rolling_points = (
+        sum(point_scores[-5:]) / len(point_scores[-5:]) if point_scores else None
+    )
 
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Total points", total_points)
+    m1.metric("Rolling points (last 5)", f"{rolling_points:.1f}" if rolling_points is not None else "n/a")
     m2.metric("Settled bets", len(finished))
     m3.metric("Open bets", len(pending))
-    m4.metric("Rolling Brier (last 5)", f"{rolling:.3f}" if rolling is not None else "n/a")
+    m4.metric("Rolling Brier (last 5)", f"{rolling_brier:.3f}" if rolling_brier is not None else "n/a")
+    st.caption(f"Lifetime total: {total_points} pts")
 
     if finished:
-        rows = []
-        cumulative = 0
-        ordered = sorted(finished, key=lambda b: b.get("kickoff_at") or "")
-        for b in ordered:
-            cumulative += b.get("points_awarded") or 0
-            rows.append(
+        pdf = pd.DataFrame(
+            [
                 {
                     "match": f"{b['home_team']} vs {b['away_team']}",
-                    "kickoff": b.get("kickoff_at"),
                     "points": b.get("points_awarded") or 0,
-                    "cumulative": cumulative,
                 }
-            )
-        df = pd.DataFrame(rows)
+                for b in ordered_finished
+            ]
+        )
+        pdf["rolling_5"] = pdf["points"].rolling(5, min_periods=1).mean()
         fig = px.line(
-            df, x="match", y="cumulative", markers=True, title="Cumulative points"
+            pdf,
+            x="match",
+            y=["points", "rolling_5"],
+            markers=True,
+            title="Points per game (higher = better)",
         )
         fig.update_layout(xaxis_title="", yaxis_title="points")
         st.plotly_chart(fig, width="stretch")
