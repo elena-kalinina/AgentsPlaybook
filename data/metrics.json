@@ -103,5 +103,12 @@
     "brier_score": 0.2528,
     "points_awarded": 6,
     "recorded_at": "2026-07-10T10:49:24.156421+00:00"
+  },
+  {
+    "match_id": "abab9243-de8f-4f6a-aa18-a2418c8760f3",
+    "match": "Spain vs Belgium",
+    "brier_score": 0.185,
+    "points_awarded": 5,
+    "recorded_at": "2026-07-11T09:23:34.256648+00:00"
   }
 ]
