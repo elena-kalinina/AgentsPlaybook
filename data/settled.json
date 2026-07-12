@@ -114,5 +114,15 @@
     "match": "Spain vs Belgium",
     "points_awarded": 5,
     "processed_at": "2026-07-11T09:24:13.283583+00:00"
+  },
+  "45eadab2-4042-4555-99a1-27934b6ad1a2": {
+    "match": "Argentina vs Switzerland",
+    "points_awarded": 3,
+    "processed_at": "2026-07-12T09:48:19.192151+00:00"
+  },
+  "7592babd-057c-47bc-89d9-4196252b2c10": {
+    "match": "Norway vs England",
+    "points_awarded": 4,
+    "processed_at": "2026-07-12T09:48:19.192164+00:00"
   }
 }

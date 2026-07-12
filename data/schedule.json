@@ -1,19 +1,4 @@
 {
-  "updated_at": "2026-07-11T20:56:37.635957+00:00",
-  "matches": [
-    {
-      "match_id": "7592babd-057c-47bc-89d9-4196252b2c10",
-      "match": "Norway vs England",
-      "kickoff_at": "2026-07-11T21:00:00+00:00",
-      "stage": "knockout",
-      "has_bet": true
-    },
-    {
-      "match_id": "45eadab2-4042-4555-99a1-27934b6ad1a2",
-      "match": "Argentina vs Switzerland",
-      "kickoff_at": "2026-07-12T01:00:00+00:00",
-      "stage": "knockout",
-      "has_bet": true
-    }
-  ]
+  "updated_at": "2026-07-12T09:48:22.590849+00:00",
+  "matches": []
 }
