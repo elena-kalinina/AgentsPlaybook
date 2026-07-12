@@ -42,3 +42,21 @@ def rolling_brier(history: list[dict[str, Any]], n: int = 5) -> float | None:
         return None
     window = scores[-n:]
     return sum(window) / len(window)
+
+
+def rolling_points(history: list[dict[str, Any]], n: int = 5) -> float | None:
+    scores = [h["points_awarded"] for h in history if h.get("points_awarded") is not None]
+    if not scores:
+        return None
+    window = scores[-n:]
+    return sum(window) / len(window)
+
+
+def performance_snapshot(path: Path, n: int = 5) -> dict[str, Any]:
+    """Recent Brier + points trends for prompts and logging."""
+    history = load_metrics(path)
+    return {
+        "rolling_brier": rolling_brier(history, n),
+        "rolling_points": rolling_points(history, n),
+        "recent_matches": history[-n:] if history else [],
+    }

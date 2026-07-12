@@ -11,13 +11,15 @@ from src.config import ROOT, Settings
 from src.intel.summarize import summarize_finished_matches, summarize_upcoming_matches
 from src.intel.tavily import PRE_MATCH_TTL_SEC, TavilySearch
 from src.loop.knockout import (
+    CUP_CLASH_SCORING_RULES,
     KNOCKOUT_BETTING_RULES,
+    PERFORMANCE_OBJECTIVE,
     PREDICT_KNOCKOUT_INSTRUCTIONS,
     REFLECT_CRITICAL_INSTRUCTIONS,
 )
 from src.mcp.client import McpClient
 from src.loop import settled
-from src.metrics.brier import append_metrics, compute_brier, rolling_brier
+from src.metrics.brier import append_metrics, compute_brier, performance_snapshot, rolling_brier, rolling_points
 from src.loop.prebet_gate import mark_prebet_done, prebet_window_status, reset_for_daily_cycle
 from src.loop import daily_state
 from src.playbook import predictions_store
@@ -25,7 +27,9 @@ from src.playbook import store as playbook_store
 
 SYSTEM_PROMPT = """You are a Cup Clash prediction agent specializing in **knockout-phase**
 World Cup matches. You analyze results critically, maintain a knockout playbook, and place
-in-app play-money predictions. Return ONLY valid JSON when asked — no markdown fences, no extra prose."""
+in-app play-money predictions. Optimize for **Cup Clash points** (discrete picks) and
+**honest probability calibration** (Brier — lower is better). Return ONLY valid JSON when
+asked — no markdown fences, no extra prose."""
 
 
 def run_reflect_only(settings: Settings, *, force_evolve: bool = False) -> dict[str, Any]:
@@ -453,6 +457,14 @@ def _reflect_phase(
     else:
         history = append_metrics(settings.metrics_path, [])
     rolling = rolling_brier(history, n=5)
+    rolling_pts = rolling_points(history, n=5)
+    points_this_run = [
+        {
+            "match": f"{b['home_team']} vs {b['away_team']}",
+            "points_awarded": b.get("points_awarded"),
+        }
+        for b in finished
+    ]
 
     print("    Brier scores (0=perfect, 2=worst):")
     for r in brier_rows:
@@ -461,6 +473,7 @@ def _reflect_phase(
         else:
             print(f"      {r['match']}: n/a ({r.get('reason')})")
     print(f"    rolling Brier (last 5): {rolling}")
+    print(f"    rolling points (last 5): {rolling_pts}")
 
     violation_note = ""
     if scheduled_violations:
@@ -471,6 +484,8 @@ Rule violations in scheduled knockout bets:
 
     reflect_prompt = f"""
 {KNOCKOUT_BETTING_RULES}
+{CUP_CLASH_SCORING_RULES}
+{PERFORMANCE_OBJECTIVE}
 {REFLECT_CRITICAL_INSTRUCTIONS}
 
 Current knockout playbook:
@@ -478,6 +493,9 @@ Current knockout playbook:
 
 Our finished bets (JSON):
 {json.dumps(finished, indent=2)}
+
+Points awarded this run:
+{json.dumps(points_this_run, indent=2)}
 
 Summarized match intel (includes extracted actual cards + winner):
 {json.dumps(intel, indent=2)}
@@ -487,20 +505,24 @@ just comment on them). Lower is better calibrated (0=perfect, 2=worst). "n/a" me
 we have no stored probability estimate for that bet (predates calibration tracking):
 {json.dumps(brier_rows, indent=2)}
 Rolling Brier (last 5 scored matches): {rolling}
+Rolling points (last 5 scored matches): {rolling_pts}
 
 {violation_note}
 
 Analyze every dimension: winner, exact 90-min score, cards, favourite player, calibration
-(Brier), points left on table.
+(Brier), and points left on table. Relate each match to both signals — a lucky win with
+high Brier is not a success; a well-calibrated miss still needs a points fix.
 Return JSON:
 {{
-  "summary": "critical 2-3 sentence assessment — highlight misses and calibration, not just wins",
+  "summary": "critical 2-3 sentence assessment — highlight misses, calibration, and points, not just wins",
   "per_match": [
     {{
       "match": "Home vs Away",
       "what_went_well": ["..."],
       "what_went_poorly": ["..."],
-      "points_left_on_table": "what exact score/cards/fav player cost us",
+      "points_awarded": 0,
+      "points_breakdown": "which rubric lines hit or missed (winner 3, exact score 5, fav player 2, exact yellows 2, yellows ±1 1, exact reds 1)",
+      "points_left_on_table": "highest-value misses using the rubric — e.g. wrong exact score cost 5",
       "cards": {{
         "predicted_yellow": 0,
         "predicted_red": 0,
@@ -514,14 +536,16 @@ Return JSON:
   ],
   "card_trends": ["patterns e.g. over-counting yellows, missing reds"],
   "calibration_trend": "is rolling Brier improving, worsening, or too little data",
+  "points_trend": "is rolling points (last 5) improving, worsening, or too little data",
   "knockout_rule_violations": ["any draw picks or 90-min score mistakes"],
   "should_update_playbook": true,
-  "update_rationale": "specific gaps to fix in the knockout playbook"
+  "update_rationale": "specific gaps to fix — address both calibration and points where they diverge"
 }}
 """
     reflection = router.analyze_json(reflect_prompt, system=SYSTEM_PROMPT, phase="reflect")
     reflection["brier_scores"] = brier_rows
     reflection["rolling_brier"] = rolling
+    reflection["rolling_points"] = rolling_pts
     run_log["reflection"] = reflection
     print(f"    summary: {reflection.get('summary', '')[:140]}...")
     for row in reflection.get("per_match") or []:
@@ -556,18 +580,22 @@ def _evolve_phase(
     version = playbook_store.current_version(playbook)
     evolve_prompt = f"""
 {KNOCKOUT_BETTING_RULES}
+{CUP_CLASH_SCORING_RULES}
+{PERFORMANCE_OBJECTIVE}
 
 Current knockout playbook (v{version}):
 {playbook}
 
-Reflection (includes Brier calibration scores and rolling_brier):
+Reflection (includes Brier calibration, rolling_brier, rolling_points, points_trend):
 {json.dumps(reflection, indent=2)}
 
 Summarized intel:
 {json.dumps(intel, indent=2)}
 
 Rewrite to v{version + 1} for knockout phase only. Fold in card trends, score misses,
-no-draw rule, and calibration_trend if it points to over/under-confidence. Keep sections:
+no-draw rule, calibration_trend (over/under-confidence), and points_trend (which fields
+cost points). Playbook heuristics should help the agent **maximize Cup Clash points**
+while keeping probability estimates honest for Brier. Keep sections:
 Principles, Knockout rules, Heuristics, Watch-outs, Open questions, Changelog.
 Under ~450 words.
 
@@ -684,6 +712,7 @@ def _research_predict_place(
         )
 
     print("\n==> Phase 7: PREDICT + PLACE — batched (act model)")
+    perf = performance_snapshot(settings.metrics_path, n=5)
     knockout = all(m.get("stage") == "knockout" for m in targets)
     winner_note = (
         "winner must be home or away for each knockout match (never draw)"
@@ -691,8 +720,13 @@ def _research_predict_place(
         else "winner may be home, draw, or away"
     )
     predict_prompt = f"""
+{CUP_CLASH_SCORING_RULES}
 {KNOCKOUT_BETTING_RULES if knockout else ""}
+{PERFORMANCE_OBJECTIVE}
 {PREDICT_KNOCKOUT_INSTRUCTIONS if knockout else ""}
+
+Recent performance (last 5 scored matches — use as feedback, not a hard rule):
+{json.dumps(perf, indent=2)}
 
 Playbook:
 {playbook}
@@ -704,10 +738,14 @@ prob_home/prob_draw/prob_away estimate you may refine):
 Targets (JSON):
 {json.dumps(targets, indent=2)}
 
-Produce one prediction per match. {winner_note}. Aim close to real outcomes on every field.
+Produce one prediction per match. {winner_note}. Use the scoring rubric to prioritize fields
+(exact score 5 pts, winner 3, exact yellows or favourite player 2 each, yellows ±1 or exact
+reds 1 each). Aim close to real outcomes on every field to maximize total Cup Clash points.
 Report your HONEST calibrated probabilities (prob_home/prob_draw/prob_away, sum to 1) for
 the 90-minute 1X2 outcome separately from your discrete "winner" pick — the pick may differ
 from argmax(prob) if your strategy favours it, but say so in reasoning if it does.
+If rolling Brier is high, soften overconfident probs; if rolling points is low, tighten
+score/card/favourite-player heuristics from the playbook.
 
 Return JSON:
 {{
