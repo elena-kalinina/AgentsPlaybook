@@ -250,5 +250,19 @@
     "reasoning": "Argentina is the clear favorite, but Switzerland's defense is formidable. The intel points to a low-scoring, tactical game. I expect Argentina to eventually break through, but it could be a tight affair.",
     "playbook_version": 10,
     "saved_at": "2026-07-10T10:56:21.850410+00:00"
+  },
+  "6890e4ec-1c8d-4df9-b724-9ab91549d8e3": {
+    "match": "France vs Spain",
+    "probs": {
+      "home": 0.35,
+      "draw": 0.4,
+      "away": 0.25
+    },
+    "pick": "home",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "France enters as the favorite, but Spain's quality, even without Pedri, suggests a highly competitive semi-final. Given the stage and the 'clash of titans' nature, a tight 90-minute draw is a strong possibility, leading to extra time or penalties. France is predicted to advance, aligning with their strong tournament form. Probabilities are calibrated to reflect a higher chance of a 90-minute draw to protect Brier, while still acknowledging France's overall superiority. Yellow cards are kept low for an elite match, and Mbappe is the most impactful player.",
+    "playbook_version": 12,
+    "saved_at": "2026-07-13T10:57:41.128019+00:00"
   }
 }

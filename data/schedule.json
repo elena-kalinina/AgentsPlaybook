@@ -1,4 +1,12 @@
 {
-  "updated_at": "2026-07-12T09:48:22.590849+00:00",
-  "matches": []
+  "updated_at": "2026-07-13T10:56:38.330064+00:00",
+  "matches": [
+    {
+      "match_id": "6890e4ec-1c8d-4df9-b724-9ab91549d8e3",
+      "match": "France vs Spain",
+      "kickoff_at": "2026-07-14T19:00:00+00:00",
+      "stage": "knockout",
+      "has_bet": false
+    }
+  ]
 }
