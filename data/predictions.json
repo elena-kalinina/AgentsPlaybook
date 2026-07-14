@@ -254,16 +254,16 @@
   "6890e4ec-1c8d-4df9-b724-9ab91549d8e3": {
     "match": "France vs Spain",
     "probs": {
-      "home": 0.35,
-      "draw": 0.4,
+      "home": 0.4,
+      "draw": 0.35,
       "away": 0.25
     },
     "pick": "home",
     "predicted_home_score": 1,
     "predicted_away_score": 1,
-    "reasoning": "France enters as the favorite, but Spain's quality, even without Pedri, suggests a highly competitive semi-final. Given the stage and the 'clash of titans' nature, a tight 90-minute draw is a strong possibility, leading to extra time or penalties. France is predicted to advance, aligning with their strong tournament form. Probabilities are calibrated to reflect a higher chance of a 90-minute draw to protect Brier, while still acknowledging France's overall superiority. Yellow cards are kept low for an elite match, and Mbappe is the most impactful player.",
+    "reasoning": "This semi-final is expected to be an extremely tight and tactical battle between two of the world's best teams, with intel suggesting a high probability of going beyond 90 minutes. I am predicting a 1-1 draw in regulation time to maximize points for the exact score, reflecting the competitive balance and the likelihood of extra time or penalties. France's experience in high-stakes knockout games and the individual brilliance of Kylian Mbapp\u00e9 give them a slight edge to ultimately advance, hence the 'home' winner pick. The low yellow card count (1) is based on the elite nature of the matchup, where tactical discipline is paramount, and referees tend to manage the game tightly without excessive bookings. Probabilities are calibrated to reflect the high potential for a 90-minute draw, making it the most likely outcome for regulation, while still acknowledging France's overall strength.",
     "playbook_version": 12,
-    "saved_at": "2026-07-13T10:57:41.128019+00:00"
+    "saved_at": "2026-07-14T18:41:30.193792+00:00"
   },
   "88b955ca-1949-4e76-a4c0-d624b9ecf106": {
     "match": "England vs Argentina",

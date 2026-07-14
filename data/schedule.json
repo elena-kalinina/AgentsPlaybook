@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-14T09:53:32.596504+00:00",
+  "updated_at": "2026-07-14T18:41:13.924674+00:00",
   "matches": [
     {
       "match_id": "6890e4ec-1c8d-4df9-b724-9ab91549d8e3",
@@ -13,7 +13,7 @@
       "match": "England vs Argentina",
       "kickoff_at": "2026-07-15T19:00:00+00:00",
       "stage": "knockout",
-      "has_bet": false
+      "has_bet": true
     }
   ]
 }
