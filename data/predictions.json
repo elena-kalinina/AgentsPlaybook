@@ -264,5 +264,19 @@
     "reasoning": "France enters as the favorite, but Spain's quality, even without Pedri, suggests a highly competitive semi-final. Given the stage and the 'clash of titans' nature, a tight 90-minute draw is a strong possibility, leading to extra time or penalties. France is predicted to advance, aligning with their strong tournament form. Probabilities are calibrated to reflect a higher chance of a 90-minute draw to protect Brier, while still acknowledging France's overall superiority. Yellow cards are kept low for an elite match, and Mbappe is the most impactful player.",
     "playbook_version": 12,
     "saved_at": "2026-07-13T10:57:41.128019+00:00"
+  },
+  "88b955ca-1949-4e76-a4c0-d624b9ecf106": {
+    "match": "England vs Argentina",
+    "probs": {
+      "home": 0.32,
+      "draw": 0.4,
+      "away": 0.28
+    },
+    "pick": "home",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "Given both teams' recent extra-time wins and the 'fierce rivals' dynamic, a tight, physical semi-final is expected. I predict a 1-1 draw at 90 minutes, with England ultimately advancing in extra time or penalties, aligning with their 'slightly favored' status. The probabilities are adjusted to reflect a high likelihood of a 90-minute draw, as per playbook rules for Brier calibration. Jude Bellingham is chosen as favourite player due to his in-form transitional midfield role, aligning with playbook guidance. A higher yellow card count (4) is anticipated given the high stakes, physical nature, and several England players being on suspension watch.",
+    "playbook_version": 12,
+    "saved_at": "2026-07-14T09:53:53.169492+00:00"
   }
 }

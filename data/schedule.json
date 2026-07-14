@@ -1,10 +1,17 @@
 {
-  "updated_at": "2026-07-13T10:56:38.330064+00:00",
+  "updated_at": "2026-07-14T09:53:32.596504+00:00",
   "matches": [
     {
       "match_id": "6890e4ec-1c8d-4df9-b724-9ab91549d8e3",
       "match": "France vs Spain",
       "kickoff_at": "2026-07-14T19:00:00+00:00",
+      "stage": "knockout",
+      "has_bet": true
+    },
+    {
+      "match_id": "88b955ca-1949-4e76-a4c0-d624b9ecf106",
+      "match": "England vs Argentina",
+      "kickoff_at": "2026-07-15T19:00:00+00:00",
       "stage": "knockout",
       "has_bet": false
     }
