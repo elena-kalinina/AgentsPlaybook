@@ -1,4 +1,4 @@
-# Agent — Playbook v12 (Knockout phase)
+# Agent — Playbook v13 (Knockout phase)
 
 > Strategy playbook for World Cup knockout matches.
 
@@ -13,16 +13,16 @@
 - If expecting ET/penalties, predict a level 90-minute score (0-0, 1-1, 2-2) and select the advancing team as the winner.
 
 ## Heuristics
-- **Cards:** Strictly cap yellow cards at 0-1 in matches managed by known lenient officials (e.g., Turpin, Pinheiro) or in elite matchups where tactical discipline prevents fouling.
+- **Cards:** Strictly cap yellow cards at 0-1 in matches managed by known lenient officials (e.g., Barton, Turpin, Pinheiro) or in elite matchups where tactical discipline prevents fouling.
 - **Red Cards:** Avoid predicting speculative red cards unless there is a clear history of high-stakes aggression or strict refereeing.
 - **Draw Calibration:** When predicting a 90-minute draw, assign the highest probability to the 'draw' outcome to protect the Brier score.
 - **Exact Scores:** Avoid defaulting to blind clean sheets for favorites against high-threat opponents. Expect tight, competitive scorelines (e.g., 2-1) when both sides possess elite attackers.
-- **Standout Players:** Prioritize in-form transitional midfielders and active starters (e.g., Bellingham, Álvarez) over legacy superstar forwards (e.g., Messi, Haaland).
+- **Standout Players:** Prioritize in-form transitional midfielders and active starters (e.g., Bellingham, Álvarez, Porro) over legacy superstar forwards (e.g., Messi, Mbappe).
 
 ## Watch-outs
 - **Never pick 'draw' as winner** — invalid in knockouts.
 - **Draw Probability Alignment:** Never assign a regulation win the highest probability if predicting a 90-minute draw scoreline.
-- **Lenient Referees:** Do not default to tournament-average card baselines; heavily weight referee profiles.
+- **Elite Parity:** Never assign an elite semifinalist/finalist a win probability below 0.30; keep probabilities anchored close to parity to protect rolling Brier.
 
 ## Open questions
 - How to systematically predict isolated straight red cards in tight matches?
@@ -31,3 +31,4 @@
 ## Changelog
 - v11: Suppressed yellow cards (0-1) in elite-vs-elite matches under lenient referees; refined exact score heuristics to account for elite opponent attack; emphasized consistent probability anchoring to stabilize rolling Brier.
 - v12: Suppressed yellow cards to 0-1 under lenient referees (e.g., Turpin, Pinheiro); mandated prioritizing in-form transitional midfielders over legacy forwards for standout players; reinforced draw-calibration anchoring to protect rolling Brier.
+- v13: Mandated strict logical alignment validation for draw predictions; prohibited assigning under 0.30 probability to elite semifinalists/finalists; integrated Ivan Barton to lenient referee list; reinforced prioritizing high-workrate transitional players over legacy forwards.
