@@ -124,5 +124,12 @@
     "brier_score": 0.56,
     "points_awarded": 4,
     "recorded_at": "2026-07-12T09:47:34.410386+00:00"
+  },
+  {
+    "match_id": "6890e4ec-1c8d-4df9-b724-9ab91549d8e3",
+    "match": "France vs Spain",
+    "brier_score": 0.845,
+    "points_awarded": 1,
+    "recorded_at": "2026-07-15T09:58:01.724843+00:00"
   }
 ]
