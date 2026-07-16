@@ -268,15 +268,15 @@
   "88b955ca-1949-4e76-a4c0-d624b9ecf106": {
     "match": "England vs Argentina",
     "probs": {
-      "home": 0.32,
-      "draw": 0.36,
+      "home": 0.36,
+      "draw": 0.32,
       "away": 0.32
     },
     "pick": "home",
-    "predicted_home_score": 1,
+    "predicted_home_score": 2,
     "predicted_away_score": 1,
-    "reasoning": "This semi-final is expected to be a highly competitive and tight affair, as reflected by the market and both teams' recent extra-time victories. To address the high rolling Brier score, probabilities are spread, with a 90-minute draw being the most likely outcome, reflecting the 'elite parity' and potential for extra time. The predicted score of 1-1 maximizes points for an exact score if it goes to extra time. Despite the high draw probability, a winner must be selected for the tie; England is chosen to advance based on a slight market edge and strong midfield presence. Yellow cards are set at 2, acknowledging the 'moderate card risk' in a fiery rivalry while considering tactical discipline in an elite match. Jude Bellingham is picked as the favourite player, aligning with the playbook's emphasis on in-form transitional midfielders over legacy forwards, even with Messi's exceptional scoring form.",
+    "reasoning": "This semi-final between England and Argentina is expected to be a tight, physical, and fiery encounter, as suggested by the historic rivalry and both teams' recent extra-time victories. England is marginally favored by market odds and has a slight home advantage. I've calibrated probabilities to reflect this parity and the high rolling Brier score, ensuring no overconfidence. I predict a narrow regulation win for England (2-1) to maximize Cup Clash points, as a 90-minute draw would require the draw probability to be highest, which is not the case here. Given the intensity and rivalry, I expect a moderate number of yellow cards (4) rather than the lower end for elite matchups, as discipline may be tested. Jude Bellingham is selected as the favourite player, aligning with the playbook's emphasis on in-form, transitional midfielders over legacy forwards.",
     "playbook_version": 13,
-    "saved_at": "2026-07-15T17:59:04.337858+00:00"
+    "saved_at": "2026-07-15T18:40:45.507374+00:00"
   }
 }
