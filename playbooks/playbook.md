@@ -1,10 +1,10 @@
-# Agent — Playbook v13 (Knockout phase)
+# Agent — Playbook v14 (Knockout phase)
 
 > Strategy playbook for World Cup knockout matches.
 
 ## Principles
 - Predict honestly first, then apply knockout strategy.
-- Protect Brier calibration: Avoid flat/hedged probabilities. Anchor probabilities consistently to stabilize rolling Brier. Confidently back elite favorites (up to 0.80) against depleted opponents, while maintaining the 0.80 cap to hedge against extreme underdog resilience.
+- Protect Brier calibration: Avoid flat/hedged probabilities (e.g., 0.36/0.32/0.32). If predicting a regulation win, assign the winner a minimum probability of 0.45.
 - Ensure logical alignment: The predicted winner must never have the lowest probability. If predicting a 90-minute draw, the 'draw' probability must be the highest or tied-highest.
 
 ## Knockout rules
@@ -13,15 +13,13 @@
 - If expecting ET/penalties, predict a level 90-minute score (0-0, 1-1, 2-2) and select the advancing team as the winner.
 
 ## Heuristics
-- **Cards:** Strictly cap yellow cards at 0-1 in matches managed by known lenient officials (e.g., Barton, Turpin, Pinheiro) or in elite matchups where tactical discipline prevents fouling.
-- **Red Cards:** Avoid predicting speculative red cards unless there is a clear history of high-stakes aggression or strict refereeing.
-- **Draw Calibration:** When predicting a 90-minute draw, assign the highest probability to the 'draw' outcome to protect the Brier score.
-- **Exact Scores:** Avoid defaulting to blind clean sheets for favorites against high-threat opponents. Expect tight, competitive scorelines (e.g., 2-1) when both sides possess elite attackers.
-- **Standout Players:** Prioritize in-form transitional midfielders and active starters (e.g., Bellingham, Álvarez, Porro) over legacy superstar forwards (e.g., Messi, Mbappe).
+- **Cards:** Target 3 yellow cards for high-stakes physical matches to capture the ±1 margin, but strictly cap at 0-1 under lenient officials (e.g., Barton, Turpin, Pinheiro). Avoid speculative red cards (default to 0).
+- **Standout Players:** Prioritize talismanic, penalty-taking strikers (e.g., Kane) in late knockout rounds where goal-scoring is concentrated. Revert to transitional midfielders (e.g., Bellingham) only when strikers lack service.
+- **Exact Scores:** Avoid blind clean sheets for favorites against high-threat opponents. Expect tight, competitive scorelines (e.g., 2-1, 1-1) reflecting high-stakes tension.
 
 ## Watch-outs
 - **Never pick 'draw' as winner** — invalid in knockouts.
-- **Draw Probability Alignment:** Never assign a regulation win the highest probability if predicting a 90-minute draw scoreline.
+- **No Flat Hedging:** Never assign a regulation winner a probability below 0.45, which severely penalizes Brier calibration.
 - **Elite Parity:** Never assign an elite semifinalist/finalist a win probability below 0.30; keep probabilities anchored close to parity to protect rolling Brier.
 
 ## Open questions
@@ -29,6 +27,6 @@
 - What is the optimal threshold for predicting a 90-minute draw versus a narrow regulation win?
 
 ## Changelog
-- v11: Suppressed yellow cards (0-1) in elite-vs-elite matches under lenient referees; refined exact score heuristics to account for elite opponent attack; emphasized consistent probability anchoring to stabilize rolling Brier.
-- v12: Suppressed yellow cards to 0-1 under lenient referees (e.g., Turpin, Pinheiro); mandated prioritizing in-form transitional midfielders over legacy forwards for standout players; reinforced draw-calibration anchoring to protect rolling Brier.
-- v13: Mandated strict logical alignment validation for draw predictions; prohibited assigning under 0.30 probability to elite semifinalists/finalists; integrated Ivan Barton to lenient referee list; reinforced prioritizing high-workrate transitional players over legacy forwards.
+- v12: Suppressed yellow cards to 0-1 under lenient referees; prioritized transitional midfielders over legacy forwards.
+- v13: Mandated logical alignment validation; prohibited under 0.30 probability for elite semifinalists; integrated Ivan Barton to lenient referee list.
+- v14: Enforced a 0.45 minimum probability floor for predicted regulation winners to eliminate flat hedging; prioritized talismanic strikers over transitional midfielders in late knockouts; adjusted default yellow card targets to 3 for high-stakes matches.
