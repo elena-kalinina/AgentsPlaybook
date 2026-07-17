@@ -278,5 +278,19 @@
     "reasoning": "This semi-final between England and Argentina is expected to be a tight, physical, and fiery encounter, as suggested by the historic rivalry and both teams' recent extra-time victories. England is marginally favored by market odds and has a slight home advantage. I've calibrated probabilities to reflect this parity and the high rolling Brier score, ensuring no overconfidence. I predict a narrow regulation win for England (2-1) to maximize Cup Clash points, as a 90-minute draw would require the draw probability to be highest, which is not the case here. Given the intensity and rivalry, I expect a moderate number of yellow cards (4) rather than the lower end for elite matchups, as discipline may be tested. Jude Bellingham is selected as the favourite player, aligning with the playbook's emphasis on in-form, transitional midfielders over legacy forwards.",
     "playbook_version": 13,
     "saved_at": "2026-07-15T18:40:45.507374+00:00"
+  },
+  "118a1e40-0c81-4488-a07f-1ebd5fb03f1c": {
+    "match": "France vs England",
+    "probs": {
+      "home": 0.48,
+      "draw": 0.27,
+      "away": 0.25
+    },
+    "pick": "home",
+    "predicted_home_score": 2,
+    "predicted_away_score": 1,
+    "reasoning": "France enters as the favored side in this third-place playoff, supported by market odds and their overall tournament performance despite the semi-final loss. England faces significant defensive challenges with key players doubtful or suspended, which is likely to be exploited by France's potent attack. I'm predicting a 2-1 regulation win for France, balancing their offensive strength with England's ability to score. This scoreline aims to maximize Cup Clash points for exact score (5) and winner (3). The card count is set to 3 yellows, reflecting moderate intensity typical of a playoff match, with no red cards predicted as per playbook. Mbapp\u00e9 is chosen as the favourite player, aligning with the strategy to pick clutch, high-volume box strikers in deep knockout rounds. Probabilities are calibrated to reflect France as the clear favorite but are spread to maintain Brier score health, given the recent high rolling Brier.",
+    "playbook_version": 14,
+    "saved_at": "2026-07-17T09:53:03.677796+00:00"
   }
 }
