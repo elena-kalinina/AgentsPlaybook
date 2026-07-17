@@ -4,8 +4,8 @@
 
 ## Principles
 - Predict honestly first, then apply knockout strategy.
-- Protect Brier calibration: Avoid flat/hedged probabilities (e.g., 0.36/0.32/0.32). If predicting a regulation win, assign the winner a minimum probability of 0.45.
-- Ensure logical alignment: The predicted winner must never have the lowest probability. If predicting a 90-minute draw, the 'draw' probability must be the highest or tied-highest.
+- Protect Brier calibration: Eliminate home-field bias in neutral-venue matches. Keep probabilities anchored close to parity in elite matchups.
+- Ensure logical alignment: The predicted winner must never have the lowest probability.
 
 ## Knockout rules
 - Every prediction must select a winner ('home' or 'away'). 'draw' is never allowed.
@@ -13,20 +13,21 @@
 - If expecting ET/penalties, predict a level 90-minute score (0-0, 1-1, 2-2) and select the advancing team as the winner.
 
 ## Heuristics
-- **Cards:** Target 3 yellow cards for high-stakes physical matches to capture the ±1 margin, but strictly cap at 0-1 under lenient officials (e.g., Barton, Turpin, Pinheiro). Avoid speculative red cards (default to 0).
-- **Standout Players:** Prioritize talismanic, penalty-taking strikers (e.g., Kane) in late knockout rounds where goal-scoring is concentrated. Revert to transitional midfielders (e.g., Bellingham) only when strikers lack service.
-- **Exact Scores:** Avoid blind clean sheets for favorites against high-threat opponents. Expect tight, competitive scorelines (e.g., 2-1, 1-1) reflecting high-stakes tension.
+- **Cards:** Aggressively scale down yellow cards (target 0-2) in semifinals and finals. Players actively avoid suspensions, and referees let high-stakes games flow.
+- **Standout Players:** In late-stage knockouts, prioritize clutch legacy superstars and primary goalscorers (e.g., Messi, Mbappe) over transitional midfielders, as they dominate MOTM narratives in decisive games.
+- **Exact Scores:** Avoid defaulting to clean sheets for favorites against high-threat opponents. Expect tight, competitive scorelines (e.g., 2-1, 1-2) when both sides possess elite attackers.
+- **Calibration:** Eliminate home-field bias for neutral-venue matches. Anchor elite parity matchups close to 33-33-33 to protect Brier.
 
 ## Watch-outs
 - **Never pick 'draw' as winner** — invalid in knockouts.
-- **No Flat Hedging:** Never assign a regulation winner a probability below 0.45, which severely penalizes Brier calibration.
-- **Elite Parity:** Never assign an elite semifinalist/finalist a win probability below 0.30; keep probabilities anchored close to parity to protect rolling Brier.
+- **Draw Probability Alignment:** Never assign a regulation win the highest probability if predicting a 90-minute draw scoreline.
+- **Elite Parity:** Never assign an elite semifinalist/finalist a win probability below 0.30.
 
 ## Open questions
 - How to systematically predict isolated straight red cards in tight matches?
 - What is the optimal threshold for predicting a 90-minute draw versus a narrow regulation win?
 
 ## Changelog
-- v12: Suppressed yellow cards to 0-1 under lenient referees; prioritized transitional midfielders over legacy forwards.
-- v13: Mandated logical alignment validation; prohibited under 0.30 probability for elite semifinalists; integrated Ivan Barton to lenient referee list.
-- v14: Enforced a 0.45 minimum probability floor for predicted regulation winners to eliminate flat hedging; prioritized talismanic strikers over transitional midfielders in late knockouts; adjusted default yellow card targets to 3 for high-stakes matches.
+- v12: Suppressed yellow cards to 0-1 under lenient referees; prioritized transitional midfielders.
+- v13: Mandated strict logical alignment validation; prohibited under 0.30 probability for elite teams.
+- v14: Aggressively scaled down yellow cards (0-2) in semis/finals due to suspension-avoidance; pivoted standout player priority back to clutch legacy superstars in late stages; eliminated neutral-venue home bias to protect Brier.

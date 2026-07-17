@@ -17,7 +17,8 @@ UA = (
 class McpClient:
     def __init__(self, url: str, token: str) -> None:
         self.url = url
-        self.token = token
+        # Accept raw cc_… tokens or values pasted with a Bearer prefix.
+        self.token = token.removeprefix("Bearer ").strip()
         self._session: str | None = None
 
     def _post(self, body: dict[str, Any], *, include_session: bool = True) -> dict[str, Any]:
@@ -39,9 +40,9 @@ class McpClient:
         try:
             with urllib.request.urlopen(req, timeout=60) as resp:
                 raw_headers = resp.headers
-                text = resp.read().decode()
+                text = _read_mcp_body(resp)
         except urllib.error.HTTPError as exc:
-            detail = exc.read().decode() if exc.fp else str(exc)
+            detail = _read_mcp_body(exc) if exc.fp else str(exc)
             raise RuntimeError(f"MCP HTTP {exc.code}: {detail}") from exc
 
         if not self._session:
@@ -109,6 +110,33 @@ class McpClient:
 
     def place_bet(self, **kwargs: Any) -> Any:
         return self.call_tool("place_bet", kwargs)
+
+
+def _read_mcp_body(resp) -> str:
+    """Read MCP HTTP body without blocking on an open SSE stream.
+
+    The server may keep the connection alive after the first `data:` frame;
+    resp.read() would then hang until timeout even though the JSON-RPC reply
+    is already available.
+    """
+    chunks: list[str] = []
+    while True:
+        line = resp.readline()
+        if not line:
+            break
+        decoded = line.decode(errors="replace")
+        chunks.append(decoded)
+        text = "".join(chunks)
+        if _try_parse_mcp_payload(text) is not None:
+            return text
+    return "".join(chunks)
+
+
+def _try_parse_mcp_payload(text: str) -> dict[str, Any] | None:
+    try:
+        return _unwrap_sse(text)
+    except RuntimeError:
+        return None
 
 
 def _unwrap_sse(text: str) -> dict[str, Any]:

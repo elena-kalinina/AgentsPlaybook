@@ -9,6 +9,7 @@ import json
 import os
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -35,10 +36,25 @@ def _settings():
 settings = _settings()
 
 
-@st.cache_data(ttl=120)
-def fetch_bets() -> list[dict]:
+MCP_FETCH_TIMEOUT_SEC = 20
+
+
+def _fetch_bets_uncached() -> list[dict]:
     mcp = McpClient(settings.mcp_url, settings.mcp_token)
     return mcp.get_my_bets(settings.group_id, include_finished=True)
+
+
+@st.cache_data(ttl=120)
+def fetch_bets() -> list[dict]:
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(_fetch_bets_uncached)
+        try:
+            return future.result(timeout=MCP_FETCH_TIMEOUT_SEC)
+        except FuturesTimeoutError as exc:
+            raise TimeoutError(
+                f"Cup Clash MCP did not respond within {MCP_FETCH_TIMEOUT_SEC}s "
+                "(check APP_MCP_SERVER_URL / network)"
+            ) from exc
 
 
 def load_json(path: Path, default):
@@ -109,7 +125,7 @@ def launch_run(command: str) -> None:
 
 st.title("AgentsPlaybook — Cup Clash prediction agent")
 
-tab_playbook, tab_perf, tab_controls = st.tabs(["Playbook", "Performance", "Controls"])
+tab_playbook, tab_controls, tab_perf = st.tabs(["Playbook", "Controls", "Performance"])
 
 
 with tab_playbook:
@@ -131,6 +147,88 @@ with tab_playbook:
             with st.expander(f"{commit['date']} — {commit['subject']}"):
                 diff = playbook_diff(commit["hash"])
                 st.code(diff or "(no diff)", language="diff")
+
+
+with tab_controls:
+    st.caption(f"Group: `{settings.group_id[:8]}…` · MCP: `{settings.mcp_url}`")
+    schedule = load_json(settings.schedule_path, {})
+    if schedule.get("matches"):
+        st.subheader("Upcoming schedule")
+        st.caption(f"Last synced: {schedule.get('updated_at', '?')}")
+        future = [
+            m for m in schedule["matches"] if m.get("kickoff_at")
+        ]
+        if future:
+            sdf = pd.DataFrame(future)
+            st.dataframe(sdf, width="stretch", hide_index=True)
+            kickoffs = sorted(m["kickoff_at"] for m in future)
+            try:
+                earliest = datetime.fromisoformat(kickoffs[0].replace("Z", "+00:00"))
+                if earliest > datetime.now(timezone.utc):
+                    refresh_at = earliest.astimezone().strftime("%H:%M")
+                    st.caption(
+                        f"Scheduler will refresh all bets ~50 min before the earliest "
+                        f"kickoff ({refresh_at} local − 50 min)."
+                    )
+            except ValueError:
+                pass
+
+    st.subheader("Manual runs")
+    pid = run_in_progress()
+    if pid:
+        st.info(f"Run in progress (pid {pid}) — log below updates live.")
+
+    c1, c2, c3 = st.columns(3)
+    if c1.button(
+        "Settle + update playbook + bet",
+        help="Full daily loop: settle finished bets, reflect, evolve playbook, place next 3 bets",
+        disabled=bool(pid),
+        width="stretch",
+    ):
+        launch_run("run-daily-loop")
+        st.rerun()
+    if c2.button(
+        "Refresh bets now (prebet)",
+        help="Fresh intel for all upcoming bets and re-place them",
+        disabled=bool(pid),
+        width="stretch",
+    ):
+        launch_run("prebet")
+        st.rerun()
+    if c3.button(
+        "Reflect only",
+        help="Settle + reflect + evolve playbook, no new bets",
+        disabled=bool(pid),
+        width="stretch",
+    ):
+        launch_run("reflect-only")
+        st.rerun()
+
+    st.subheader("Live run log")
+
+    @st.fragment(run_every="2s")
+    def _log_tail() -> None:
+        if settings.live_log_path.exists():
+            text = settings.live_log_path.read_text(encoding="utf-8")
+            lines = text.splitlines()
+            st.code("\n".join(lines[-40:]) or "(empty)", language=None)
+        else:
+            st.code("(no runs yet)", language=None)
+        if run_in_progress() is None and LOCK_PATH.exists():
+            LOCK_PATH.unlink(missing_ok=True)
+
+    _log_tail()
+
+    st.subheader("Recent run logs")
+    run_logs = sorted(settings.logs_dir.glob("run_*.json"), reverse=True)[:5]
+    for path in run_logs:
+        data = load_json(path, {})
+        label = f"{path.name} — {data.get('mode', '?')}"
+        with st.expander(label):
+            usage = data.get("model_usage")
+            if usage:
+                st.caption(f"Model usage: {usage}")
+            st.json(data, expanded=False)
 
 
 with tab_perf:
@@ -236,84 +334,3 @@ with tab_perf:
             width="stretch",
             hide_index=True,
         )
-
-
-with tab_controls:
-    schedule = load_json(settings.schedule_path, {})
-    if schedule.get("matches"):
-        st.subheader("Upcoming schedule")
-        st.caption(f"Last synced: {schedule.get('updated_at', '?')}")
-        future = [
-            m for m in schedule["matches"] if m.get("kickoff_at")
-        ]
-        if future:
-            sdf = pd.DataFrame(future)
-            st.dataframe(sdf, width="stretch", hide_index=True)
-            kickoffs = sorted(m["kickoff_at"] for m in future)
-            try:
-                earliest = datetime.fromisoformat(kickoffs[0].replace("Z", "+00:00"))
-                if earliest > datetime.now(timezone.utc):
-                    refresh_at = earliest.astimezone().strftime("%H:%M")
-                    st.caption(
-                        f"Scheduler will refresh all bets ~50 min before the earliest "
-                        f"kickoff ({refresh_at} local − 50 min)."
-                    )
-            except ValueError:
-                pass
-
-    st.subheader("Manual runs")
-    pid = run_in_progress()
-    if pid:
-        st.info(f"Run in progress (pid {pid}) — log below updates live.")
-
-    c1, c2, c3 = st.columns(3)
-    if c1.button(
-        "Settle + update playbook + bet",
-        help="Full daily loop: settle finished bets, reflect, evolve playbook, place next 3 bets",
-        disabled=bool(pid),
-        width="stretch",
-    ):
-        launch_run("run-daily-loop")
-        st.rerun()
-    if c2.button(
-        "Refresh bets now (prebet)",
-        help="Fresh intel for all upcoming bets and re-place them",
-        disabled=bool(pid),
-        width="stretch",
-    ):
-        launch_run("prebet")
-        st.rerun()
-    if c3.button(
-        "Reflect only",
-        help="Settle + reflect + evolve playbook, no new bets",
-        disabled=bool(pid),
-        width="stretch",
-    ):
-        launch_run("reflect-only")
-        st.rerun()
-
-    st.subheader("Live run log")
-
-    @st.fragment(run_every="2s")
-    def _log_tail() -> None:
-        if settings.live_log_path.exists():
-            text = settings.live_log_path.read_text(encoding="utf-8")
-            lines = text.splitlines()
-            st.code("\n".join(lines[-40:]) or "(empty)", language=None)
-        else:
-            st.code("(no runs yet)", language=None)
-        if run_in_progress() is None and LOCK_PATH.exists():
-            LOCK_PATH.unlink(missing_ok=True)
-
-    _log_tail()
-
-    st.subheader("Recent run logs")
-    run_logs = sorted(settings.logs_dir.glob("run_*.json"), reverse=True)[:5]
-    for path in run_logs:
-        data = load_json(path, {})
-        label = f"{path.name} — {data.get('mode', '?')}"
-        with st.expander(label):
-            usage = data.get("model_usage")
-            if usage:
-                st.caption(f"Model usage: {usage}")
-            st.json(data, expanded=False)
