@@ -339,24 +339,33 @@ def _research_phase(
     tavily: TavilySearch,
     finished: list[dict[str, Any]],
     run_log: dict[str, Any],
+    *,
+    force_refresh: bool = True,
 ) -> dict[str, dict[str, str]]:
     """Gather recap + discipline + player-ratings intel per finished match (raw, no LLM).
 
-    Mirrors the 3-category structure used for pre-match research (preview/lineups/odds)
-    instead of one generic recap search — the dedicated player-ratings search in particular
-    targets our recurring standout-player misses.
+    force_refresh defaults True: a bad post-match cache (wrong cards/scorers) previously
+    poisoned reflection forever because post-match TTL is unlimited.
     """
     print("\n==> Phase 2: RESEARCH — Tavily recap + cards + player-ratings (raw, no LLM)")
     raw_intel: dict[str, dict[str, str]] = {}
     for bet in finished:
         raw_intel[bet["match_id"]] = tavily.gather_post_match_intel(
-            bet["home_team"], bet["away_team"], match_id=bet["match_id"]
+            bet["home_team"],
+            bet["away_team"],
+            match_id=bet["match_id"],
+            kickoff_at=bet.get("kickoff_at"),
+            stage=bet.get("stage"),
+            force_refresh=force_refresh,
         )
         print(
             f"    searched: {bet['home_team']} vs {bet['away_team']} "
-            f"(recap + cards + player-ratings)"
+            f"(recap + cards + player-ratings"
+            f"{', fresh' if force_refresh else ', cached ok'})"
         )
-    run_log["phases"].append({"phase": "research", "match_count": len(finished)})
+    run_log["phases"].append(
+        {"phase": "research", "match_count": len(finished), "force_refresh": force_refresh}
+    )
     return raw_intel
 
 
@@ -370,11 +379,14 @@ def _summarize_finished_phase(
     intel = summarize_finished_matches(router, finished, raw_intel)
     run_log["phases"].append({"phase": "summarize_finished", "intel": intel})
     for row in intel.get("matches") or []:
+        y, r = row.get("actual_yellow"), row.get("actual_red")
+        cards = f"{y}Y/{r}R" if y is not None or r is not None else "cards=unknown"
         print(
-            f"    • {row.get('match')}: {row.get('actual_score_90min')} "
-            f"{row.get('actual_yellow')}Y/{row.get('actual_red')}R "
-            f"winner={row.get('actual_winner')} standout={row.get('standout_player')} "
-            f"({row.get('standout_player_source')})"
+            f"    • {row.get('match')}: {row.get('actual_score_90min')} {cards} "
+            f"winner={row.get('actual_winner')} "
+            f"scorers={row.get('key_scorers')} "
+            f"fav={row.get('favourite_player_actual')} "
+            f"motm={row.get('standout_player')} ({row.get('standout_player_source')})"
         )
     return intel
 
@@ -509,9 +521,14 @@ Rolling points (last 5 scored matches): {rolling_pts}
 
 {violation_note}
 
-Analyze every dimension: winner, exact 90-min score, cards, favourite player, calibration
-(Brier), and points left on table. Relate each match to both signals — a lucky win with
-high Brier is not a success; a well-calibrated miss still needs a points fix.
+Analyze every dimension: winner, exact 90-min score, cards, favourite player (goalscorer),
+calibration (Brier), and points left on table. Relate each match to both signals — a lucky
+win with high Brier is not a success; a well-calibrated miss still needs a points fix.
+
+IMPORTANT: summarized intel may have actual_yellow/actual_red as null (unknown). Do NOT treat
+null as 0. Prefer favourite_player_actual / key_scorers over standout_player (MOTM) when
+judging the Cup Clash favourite-player miss — that field scores goalscorers.
+If mcp points_awarded conflicts with claimed card totals, say so and do not invent card lessons.
 Return JSON:
 {{
   "summary": "critical 2-3 sentence assessment — highlight misses, calibration, and points, not just wins",
@@ -526,15 +543,16 @@ Return JSON:
       "cards": {{
         "predicted_yellow": 0,
         "predicted_red": 0,
-        "actual_yellow": 0,
-        "actual_red": 0,
-        "card_assessment": "how close were we on bookings"
+        "actual_yellow": null,
+        "actual_red": null,
+        "card_assessment": "how close were we — or unknown if actuals null"
       }},
+      "favourite_player_note": "our pick vs favourite_player_actual / key_scorers",
       "calibration_note": "comment on this match's Brier score if available, else say n/a",
       "lesson": "one actionable knockout-specific lesson"
     }}
   ],
-  "card_trends": ["patterns e.g. over-counting yellows, missing reds"],
+  "card_trends": ["patterns e.g. over-counting yellows — skip if actuals unknown"],
   "calibration_trend": "is rolling Brier improving, worsening, or too little data",
   "points_trend": "is rolling points (last 5) improving, worsening, or too little data",
   "knockout_rule_violations": ["any draw picks or 90-min score mistakes"],
