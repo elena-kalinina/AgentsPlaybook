@@ -292,5 +292,19 @@
     "reasoning": "France enters as the favored side in this third-place playoff, supported by market odds and their overall tournament performance despite the semi-final loss. England faces significant defensive challenges with key players doubtful or suspended, which is likely to be exploited by France's potent attack. I'm predicting a 2-1 regulation win for France, balancing their offensive strength with England's ability to score. This scoreline aims to maximize Cup Clash points for exact score (5) and winner (3). The card count is set to 3 yellows, reflecting moderate intensity typical of a playoff match, with no red cards predicted as per playbook. Mbapp\u00e9 is chosen as the favourite player, aligning with the strategy to pick clutch, high-volume box strikers in deep knockout rounds. Probabilities are calibrated to reflect France as the clear favorite but are spread to maintain Brier score health, given the recent high rolling Brier.",
     "playbook_version": 14,
     "saved_at": "2026-07-17T09:53:03.677796+00:00"
+  },
+  "8a299c61-891b-43ea-84be-c64582b5afc4": {
+    "match": "Spain vs Argentina",
+    "probs": {
+      "home": 0.3,
+      "draw": 0.4,
+      "away": 0.3
+    },
+    "pick": "home",
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "reasoning": "This World Cup final is anticipated to be a generational blockbuster, with both teams possessing elite talent. Spain's dominant defensive record (1 goal conceded in 7 matches) suggests a tight affair, while Argentina's attacking prowess, led by Lionel Messi, ensures they will create chances. Given the high stakes and the 'potentially going to extra time and penalties' intel, a 90-minute draw is highly probable. My probabilities reflect this, with the draw being the most likely outcome. While the 90-minute score is predicted as a draw (1-1), I must pick an outright winner for the tie. Spain, as the market favorite and with their 'structurally flawless side' and imperious tournament form, is favored to advance should the match go to extra time or penalties. Lionel Messi is chosen as the favourite player due to his clutch nature and high involvement in big games, aligning with the playbook's focus on box strikers in deep knockouts. Yellow cards are set at 4, reflecting a high-stakes final, and no red cards are predicted to avoid speculation.",
+    "playbook_version": 14,
+    "saved_at": "2026-07-18T09:19:56.512345+00:00"
   }
 }
