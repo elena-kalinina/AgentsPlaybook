@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-18T09:19:40.031582+00:00",
+  "updated_at": "2026-07-18T20:56:11.738965+00:00",
   "matches": [
     {
       "match_id": "118a1e40-0c81-4488-a07f-1ebd5fb03f1c",
@@ -13,7 +13,7 @@
       "match": "Spain vs Argentina",
       "kickoff_at": "2026-07-19T19:00:00+00:00",
       "stage": "knockout",
-      "has_bet": false
+      "has_bet": true
     }
   ]
 }

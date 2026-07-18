@@ -283,15 +283,15 @@
     "match": "France vs England",
     "probs": {
       "home": 0.48,
-      "draw": 0.27,
-      "away": 0.25
+      "draw": 0.3,
+      "away": 0.22
     },
     "pick": "home",
     "predicted_home_score": 2,
     "predicted_away_score": 1,
-    "reasoning": "France enters as the favored side in this third-place playoff, supported by market odds and their overall tournament performance despite the semi-final loss. England faces significant defensive challenges with key players doubtful or suspended, which is likely to be exploited by France's potent attack. I'm predicting a 2-1 regulation win for France, balancing their offensive strength with England's ability to score. This scoreline aims to maximize Cup Clash points for exact score (5) and winner (3). The card count is set to 3 yellows, reflecting moderate intensity typical of a playoff match, with no red cards predicted as per playbook. Mbapp\u00e9 is chosen as the favourite player, aligning with the strategy to pick clutch, high-volume box strikers in deep knockout rounds. Probabilities are calibrated to reflect France as the clear favorite but are spread to maintain Brier score health, given the recent high rolling Brier.",
+    "reasoning": "France is favored by the market and intel for this third-place playoff. While both teams are expected to rotate after semifinal losses, France's depth and home advantage (as designated) give them an edge. I'm predicting a competitive 2-1 victory for France in regulation time, reflecting that both teams will likely score in a more open, lower-stakes match. The scoreline prioritizes the high-value exact score and winner points. Probabilities are slightly softened from the initial estimate to address the high rolling Brier score, while still maintaining France as the most likely winner. Yellow cards are set at 3, acknowledging the derby nature despite lower stakes. Demb\u00e9l\u00e9 is chosen as favourite player, as he's a dynamic attacker who could shine in a rotated lineup.",
     "playbook_version": 14,
-    "saved_at": "2026-07-17T09:53:03.677796+00:00"
+    "saved_at": "2026-07-18T20:56:26.597876+00:00"
   },
   "8a299c61-891b-43ea-84be-c64582b5afc4": {
     "match": "Spain vs Argentina",
