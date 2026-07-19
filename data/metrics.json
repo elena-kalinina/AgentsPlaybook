@@ -138,5 +138,12 @@
     "brier_score": 0.6944,
     "points_awarded": 3,
     "recorded_at": "2026-07-17T07:43:57.834310+00:00"
+  },
+  {
+    "match_id": "118a1e40-0c81-4488-a07f-1ebd5fb03f1c",
+    "match": "France vs England",
+    "brier_score": 0.9288,
+    "points_awarded": 3,
+    "recorded_at": "2026-07-19T09:48:51.672102+00:00"
   }
 ]
