@@ -296,15 +296,15 @@
   "8a299c61-891b-43ea-84be-c64582b5afc4": {
     "match": "Spain vs Argentina",
     "probs": {
-      "home": 0.3,
-      "draw": 0.4,
+      "home": 0.32,
+      "draw": 0.38,
       "away": 0.3
     },
     "pick": "home",
     "predicted_home_score": 1,
     "predicted_away_score": 1,
-    "reasoning": "This World Cup final is anticipated to be a generational blockbuster, with both teams possessing elite talent. Spain's dominant defensive record (1 goal conceded in 7 matches) suggests a tight affair, while Argentina's attacking prowess, led by Lionel Messi, ensures they will create chances. Given the high stakes and the 'potentially going to extra time and penalties' intel, a 90-minute draw is highly probable. My probabilities reflect this, with the draw being the most likely outcome. While the 90-minute score is predicted as a draw (1-1), I must pick an outright winner for the tie. Spain, as the market favorite and with their 'structurally flawless side' and imperious tournament form, is favored to advance should the match go to extra time or penalties. Lionel Messi is chosen as the favourite player due to his clutch nature and high involvement in big games, aligning with the playbook's focus on box strikers in deep knockouts. Yellow cards are set at 4, reflecting a high-stakes final, and no red cards are predicted to avoid speculation.",
-    "playbook_version": 14,
-    "saved_at": "2026-07-18T09:19:56.512345+00:00"
+    "reasoning": "This is a World Cup final, expected to be a tight, high-stakes encounter. Spain's dominant defensive record and market favoritism make them the predicted winner of the tie. However, given the nature of finals and the 'could potentially go to penalties' intel, a 90-minute draw (1-1) is a highly plausible and high-value scoreline to target for Cup Clash points (5 pts). The probabilities are calibrated to reflect a high likelihood of a 90-minute draw, protecting the Brier score, while still acknowledging Spain's slight edge. Lionel Messi is chosen as favourite player due to his 'jaw-dropping' form and clutch performance history in deep knockout rounds, offering a strong chance for 2 points regardless of the match outcome. Card counts align with standard high-stakes match heuristics.",
+    "playbook_version": 15,
+    "saved_at": "2026-07-19T18:40:55.477026+00:00"
   }
 }
