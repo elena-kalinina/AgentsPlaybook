@@ -145,5 +145,12 @@
     "brier_score": 0.9288,
     "points_awarded": 3,
     "recorded_at": "2026-07-19T09:48:51.672102+00:00"
+  },
+  {
+    "match_id": "8a299c61-891b-43ea-84be-c64582b5afc4",
+    "match": "Spain vs Argentina",
+    "brier_score": 0.6968,
+    "points_awarded": 3,
+    "recorded_at": "2026-07-20T10:47:45.344326+00:00"
   }
 ]

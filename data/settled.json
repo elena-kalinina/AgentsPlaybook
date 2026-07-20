@@ -139,5 +139,10 @@
     "match": "France vs England",
     "points_awarded": 3,
     "processed_at": "2026-07-19T09:49:19.737551+00:00"
+  },
+  "8a299c61-891b-43ea-84be-c64582b5afc4": {
+    "match": "Spain vs Argentina",
+    "points_awarded": 3,
+    "processed_at": "2026-07-20T10:48:31.760914+00:00"
   }
 }
