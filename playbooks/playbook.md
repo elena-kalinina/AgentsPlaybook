@@ -1,11 +1,11 @@
-# Agent — Playbook v15 (Knockout phase)
+# Agent — Playbook v16 (Knockout phase)
 
 > Strategy playbook for World Cup knockout matches.
 
 ## Principles
 - Predict honestly first, then apply knockout strategy.
-- Protect Brier calibration: Anchor elite matchups close to parity and avoid overconfidence in transitional hype to stabilize rolling Brier.
-- Ensure logical alignment: The predicted winner must never have the lowest probability. If predicting a 90-minute draw, the 'draw' probability must be the highest or tied-highest.
+- Protect Brier calibration: Because knockout outcomes are strictly binary (Home or Away advances), always set the 'draw' probability to 0%. Distribute 100% of the probability between Home and Away to eliminate the automatic Brier penalty.
+- Ensure logical alignment: The predicted winner must always have the highest probability.
 
 ## Knockout rules
 - Every prediction must select a winner ('home' or 'away'). 'draw' is never allowed.
@@ -13,22 +13,20 @@
 - If expecting ET/penalties, predict a level 90-minute score (0-0, 1-1, 2-2) and select the advancing team as the winner.
 
 ## Heuristics
-- **Bronze Finals / Consolation Matches:** Treat third-place play-offs as high-scoring, low-intensity exhibition matches. Expect volatile, high-scoring lines (e.g., 3-2, 4-3) and minimal card counts (0-1 yellows, 0 reds). Flatline probabilities close to parity (e.g., 35-30-35) to protect Brier.
-- **Cards:** Strictly cap yellow cards at 0-1 in matches managed by known lenient officials or low-stakes consolation games. Otherwise, trust disciplined tournament trends (e.g., 4 yellows, 0 reds in high-stakes matches). Avoid speculative red cards.
-- **Exact Scores:** Expect tight, competitive scorelines (e.g., 2-1 or 1-2) in high-stakes knockouts when both sides possess elite attackers. Favor proven tournament-winning clinical efficiency over transitional hype.
-- **Standout Players:** In deep knockout rounds (semi-finals/finals), prioritize clutch, high-volume box strikers (e.g., Lautaro Martínez) over transitional midfielders. In open consolation matches, prioritize high-volume elite wingers/forwards (e.g., Saka, Mbappé).
-- **Draw Calibration:** When predicting a 90-minute draw, assign the highest probability to the 'draw' outcome to protect the Brier score.
+- **Bronze Finals / Consolation Matches:** Treat as high-scoring, low-intensity exhibition matches (e.g., 3-2, 4-3) with minimal cards (0-1 yellows, 0 reds). Flatline probabilities close to 50-50 (with 0% draw).
+- **Cards:** In high-stakes finals/semis, expect high disciplinary tension. Predict 5-7 yellows and consider a speculative red card (0-1) for aggressive teams. In low-stakes matches, cap yellows at 0-1.
+- **Exact Scores:** Expect tight, defensive matches (1-0, 0-1) or level scores (0-0, 1-1) in high-stakes finals. Favor clinical, tournament-tested sides.
+- **Standout Players:** Prioritize clutch, high-volume box strikers or decisive wingers (e.g., Ferran Torres) over transitional midfielders in deep knockout rounds.
+- **Binary Probability Calibration:** Since 'draw' is never the actual advancing outcome, allocate all probability to Home and Away (e.g., 55% Home / 45% Away) to optimize Brier.
 
 ## Watch-outs
 - **Never pick 'draw' as winner** — invalid in knockouts.
-- **Draw Probability Alignment:** Never assign a regulation win the highest probability if predicting a 90-minute draw scoreline.
-- **Elite Parity:** Never assign an elite semifinalist/finalist a win probability below 0.30; keep probabilities anchored close to parity to protect rolling Brier.
+- **Zero Draw Probability:** Never assign >0% probability to 'draw' in knockout rounds.
+- **Elite Parity:** Never assign an elite semifinalist/finalist an advancing probability below 30%.
 
 ## Open questions
-- What is the optimal threshold for predicting a 90-minute draw versus a narrow regulation win?
 - How to systematically predict isolated straight red cards in tight matches?
+- What is the optimal probability split for highly asymmetric knockout matchups?
 
 ## Changelog
-- v13: Mandated strict logical alignment validation for draw predictions; prohibited assigning under 0.30 probability to elite semifinalists/finalists.
-- v14: Shifted standout player focus in deep knockouts to clutch box strikers; reinforced anchoring elite matchups near parity to protect Brier; integrated lessons from England-Argentina scoreline miss.
-- v15: Added specific heuristics for Bronze Finals (high-scoring, low-intensity, minimal cards, flatline probabilities) to address the France-England calibration and scoreline miss.
+- v16: Removed the flawed 'Draw Calibration' heuristic. Mandated 0% draw probability for knockout matches to align with binary Brier outcomes (Home/Away advancing). Adjusted card heuristics for high-stakes matches to reflect high intensity (5-7 yellows, potential reds).
